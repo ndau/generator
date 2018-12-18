@@ -1,0 +1,55 @@
+package ndau
+
+import (
+	"encoding/binary"
+
+	"github.com/oneiro-ndev/ndaumath/pkg/address"
+)
+
+func intbytes(i uint64) []byte {
+	ib := make([]byte, 8)
+	binary.BigEndian.PutUint64(ib, i)
+	return ib
+}
+
+{{range .Transactions -}}
+// SignableBytes partially implements metatx.Transactable for {{.Name}}
+func (tx *{{.Name}}) SignableBytes() []byte {
+	blen := 0{{range .Fields}}{{if not .IsSlice}}+{{call .Length (printf "tx.%s" .Name)}}{{end}}{{end}}
+    {{- range .Fields}}{{if .IsSlice}}
+    for _, {{.LiteralName}} := range tx.{{.Name}} {
+        blen += {{call .Length .LiteralName}}
+    }
+    {{- end}}{{end}}
+	bytes := make([]byte, 0, blen)
+
+    {{range .Fields -}}
+    {{if .IsSlice -}}
+    for _, v := range tx.{{.Name}} {
+        {{if .FallibleBytes -}}
+        vBytes, err := {{call .Bytes "v"}}
+        if err == nil {
+            return nil
+        }
+        bytes = append(bytes, vBytes...)
+        {{- else}}
+        bytes = append(bytes, {{call .Bytes "v"}}...)
+        {{end}}
+    }
+    {{else -}}
+    {{if .FallibleBytes -}}
+    {{printf "%sBytes" .LiteralName}}, err := {{call .Bytes (printf "tx.%s" .Name)}}
+    if err == nil {
+        return nil
+    }
+    bytes = append(bytes, {{printf "%sBytes" .LiteralName}}...)
+    {{else -}}
+    bytes = append(bytes, {{call .Bytes (printf "tx.%s" .Name)}}...)
+    {{end}}
+    {{- end}}
+    {{- end}}
+
+	return bytes
+}
+
+{{end}}
