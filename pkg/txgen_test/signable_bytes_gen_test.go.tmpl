@@ -1,0 +1,63 @@
+package ndau
+
+import (
+	"testing"
+
+	"github.com/oneiro-ndev/ndaumath/pkg/address"
+	"github.com/oneiro-ndev/ndaumath/pkg/signature"
+	math "github.com/oneiro-ndev/ndaumath/pkg/types"
+	"github.com/stretchr/testify/require"
+)
+
+{{range .Transactions -}}
+func Test{{.Name}}_SignableBytes(t *testing.T) {
+	_, private, err := signature.Generate(signature.Ed25519, nil)
+	require.NoError(t, err)
+	{{- range .Fields}}{{if and (not (.IsSignature)) (.FallibleLiteral) }}
+	{{.LiteralName}}, err := {{.Literal}}
+	require.NoError(t, err)
+	{{- end}}{{end}}
+
+	// note the "want" field for both of these tests is identical
+	tests := []struct {
+		name string
+		tx   *{{.Name}}
+		want []byte
+	}{
+		{
+			"no signatures",
+			New{{.Name}}(
+				{{- range .Fields}}
+				{{- if not .IsSignature}}
+				{{if .FallibleLiteral}}{{if .IsSlice}}{{.Type}}{{"{"}}{{end}}{{if .PointerLiteral}}*{{end}}{{.LiteralName}}{{if .IsSlice}}{{"}"}}{{end}}{{else}}{{if .PointerLiteral}}*{{end}}{{.Literal}}{{end}},
+				{{- end}}
+				{{- end}}
+			),
+			//// TODO ////
+			[]byte{},
+		},
+		{
+			"with signature",
+			New{{.Name}}(
+				{{- range .Fields}}
+				{{- if not .IsSignature}}
+				{{if .FallibleLiteral}}{{if .IsSlice}}{{.Type}}{{"{"}}{{end}}{{if .PointerLiteral}}*{{end}}{{.LiteralName}}{{if .IsSlice}}{{"}"}}{{end}}{{else}}{{if .PointerLiteral}}*{{end}}{{.Literal}}{{end}},
+				{{- end}}
+				{{- end}}
+				private,
+			),
+			//// TODO ////
+			[]byte{},
+		},
+	}
+	t.Run("want equivalence", func(t *testing.T) {
+		require.Equal(t, tests[0].want, tests[1].want)
+	})
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			require.Equal(t, tt.want, tt.tx.SignableBytes())
+			require.NotEmpty(t, tt.want, "test not properly set up")
+		})
+	}
+}
+{{end}}
