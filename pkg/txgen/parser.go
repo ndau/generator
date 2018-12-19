@@ -7,7 +7,6 @@ import (
 	"go/parser"
 	"go/token"
 	"os"
-	"strings"
 )
 
 // ParseTransactions parses the transaction definition file
@@ -55,9 +54,6 @@ func ParseField(f *ast.Field, tx *Transaction) ([]Field, error) {
 
 	out := make([]Field, 0, len(f.Names))
 	for _, ident := range f.Names {
-		if strings.ToLower(ident.Name) == "signature" || strings.ToLower(ident.Name) == "signatures" {
-			continue
-		}
 		field := NewField(ident.Name, fieldType, tx)
 		out = append(out, field)
 	}

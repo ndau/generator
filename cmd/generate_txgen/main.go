@@ -9,8 +9,8 @@ import (
 )
 
 var (
-	template = flag.String("t template", txgen.DefaultTemplatePath, "template to generate")
-	output   = flag.String("o output", txgen.DefaultOutputPath, "path to output file")
+	template = flag.String("template", txgen.DefaultTemplatePath, "template to generate")
+	output   = flag.String("output", txgen.DefaultOutputPath, "path to output file")
 )
 
 func check(err error) {

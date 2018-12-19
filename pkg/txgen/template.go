@@ -2,14 +2,14 @@ package txgen
 
 import (
 	"os"
+	"path/filepath"
 	"strings"
 	"text/template"
 )
 
-const templateName = "signable_bytes.go"
-
 // ParseTemplate parses the template definition
 func ParseTemplate(path string) (*template.Template, error) {
+	_, templateName := filepath.Split(path)
 	return template.New(templateName).Funcs(template.FuncMap{
 		"Lower": strings.ToLower,
 	}).ParseFiles(path)
@@ -22,5 +22,5 @@ func ApplyTemplate(t *template.Template, c *Context, output string) error {
 		return err
 	}
 	defer f.Close()
-	return t.ExecuteTemplate(f, templateName+".tmpl", *c)
+	return t.ExecuteTemplate(f, t.Name(), *c)
 }

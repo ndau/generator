@@ -15,3 +15,13 @@ func (t Transaction) HasField(name string) bool {
 	}
 	return false
 }
+
+// Multisig is true if this transaction supports multiple signatures
+func (t Transaction) Multisig() bool {
+	for _, f := range t.Fields {
+		if f.IsSignature() && f.IsSlice() {
+			return true
+		}
+	}
+	return false
+}

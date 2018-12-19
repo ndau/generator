@@ -65,3 +65,8 @@ func (f *Field) LiteralName() string {
 func (f *Field) IsSlice() bool {
 	return f.Type != "[]byte" && strings.HasPrefix(f.Type, "[]")
 }
+
+// IsSignature is true if the field is a signature field
+func (f *Field) IsSignature() bool {
+	return strings.EqualFold(f.Name, "signature") || strings.EqualFold(f.Name, "signatures")
+}
