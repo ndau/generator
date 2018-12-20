@@ -1,9 +1,16 @@
 package txgen
 
+import (
+	"encoding/json"
+
+	"github.com/oneiro-ndev/metanode/pkg/meta/transaction"
+)
+
 // Transaction stores metadata about a transaction
 type Transaction struct {
-	Name   string
-	Fields []Field
+	Name    string
+	Fields  []Field
+	Example metatx.Transactable
 }
 
 // HasField is true if the transaction has a field with the specified name
@@ -24,4 +31,13 @@ func (t Transaction) Multisig() bool {
 		}
 	}
 	return false
+}
+
+// JSON returns the JSON form of this transaction's example
+func (t Transaction) JSON() string {
+	js, err := json.Marshal(t.Example)
+	if err != nil {
+		panic(err)
+	}
+	return string(js)
 }

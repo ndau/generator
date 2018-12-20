@@ -7,6 +7,8 @@ import (
 	"go/parser"
 	"go/token"
 	"os"
+
+	"github.com/oneiro-ndev/metanode/pkg/meta/transaction"
 )
 
 // ParseTransactions parses the transaction definition file
@@ -61,7 +63,7 @@ func ParseField(f *ast.Field, tx *Transaction) ([]Field, error) {
 }
 
 // ParseTransaction parses the given node of the AST as if it were a Transaction
-func ParseTransaction(name string, node ast.Node) (out Transaction, err error) {
+func ParseTransaction(name string, node ast.Node, examplesMap map[string]metatx.Transactable) (out Transaction, err error) {
 	s, ok := node.(*ast.StructType)
 	if !ok {
 		err = errors.New("node must be a struct definition")
@@ -69,6 +71,7 @@ func ParseTransaction(name string, node ast.Node) (out Transaction, err error) {
 	}
 
 	out.Name = name
+	out.Example = examplesMap[name]
 
 	var parsedFields []Field
 	for _, field := range s.Fields.List {

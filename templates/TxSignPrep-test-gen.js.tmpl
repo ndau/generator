@@ -1,0 +1,24 @@
+import TxSignPrep from '../TxSignPrep'
+
+{{range .Transactions -}}
+describe('{{.Name}} object prepare tests', () => {
+  it('should build an object for {{.Name}} and convert to known b64', () => {
+    var {{.Name | Lower}}tx = {{.JSON}}
+
+    var bb = new TxSignPrep().prepare({{.Name | Lower}}tx)
+    var b64 = bb.b64encode()
+    expect(b64).toEqual(
+      {{.Example.SignableBytes | Base64 | Quote}}
+    )
+  })
+  it('should build an object for {{.Name}} without signatures and convert to known b64', () => {
+    var {{.Name | Lower}}tx = {{.JSON | StripSignatures}}
+
+    var bb = new TxSignPrep().prepare({{.Name | Lower}}tx)
+    var b64 = bb.b64encode()
+    expect(b64).toEqual(
+      {{.Example.SignableBytes | Base64 | Quote}}
+    )
+  })
+})
+{{end}}

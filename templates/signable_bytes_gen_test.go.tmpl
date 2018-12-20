@@ -18,45 +18,46 @@ func Test{{.Name}}_SignableBytes(t *testing.T) {
 	require.NoError(t, err)
 	{{- end}}{{end}}
 
+	// {{.Example.SignableBytes | Base64}}
+	expect := {{.Example.SignableBytes | BytesLiteral}}
+	require.NotEmpty(t, expect, "test not properly set up")
+
 	// note the "want" field for both of these tests is identical
 	tests := []struct {
 		name string
 		tx   *{{.Name}}
-		want []byte
 	}{
 		{
 			"no signatures",
 			New{{.Name}}(
 				{{- range .Fields}}
 				{{- if not .IsSignature}}
+				{{- if eq .Type "[]byte"}}
+				// {{.Name}} as b64: {{.Comment}}
+				{{- end}}
 				{{if .FallibleLiteral}}{{if .IsSlice}}{{.Type}}{{"{"}}{{end}}{{if .PointerLiteral}}*{{end}}{{.LiteralName}}{{if .IsSlice}}{{"}"}}{{end}}{{else}}{{if .PointerLiteral}}*{{end}}{{.Literal}}{{end}},
 				{{- end}}
 				{{- end}}
 			),
-			//// TODO ////
-			[]byte{},
 		},
 		{
 			"with signature",
 			New{{.Name}}(
 				{{- range .Fields}}
 				{{- if not .IsSignature}}
+				{{- if eq .Type "[]byte"}}
+				// {{.Name}} as b64: {{.Comment}}
+				{{- end}}
 				{{if .FallibleLiteral}}{{if .IsSlice}}{{.Type}}{{"{"}}{{end}}{{if .PointerLiteral}}*{{end}}{{.LiteralName}}{{if .IsSlice}}{{"}"}}{{end}}{{else}}{{if .PointerLiteral}}*{{end}}{{.Literal}}{{end}},
 				{{- end}}
 				{{- end}}
 				private,
 			),
-			//// TODO ////
-			[]byte{},
 		},
 	}
-	t.Run("want equivalence", func(t *testing.T) {
-		require.Equal(t, tests[0].want, tests[1].want)
-	})
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			require.Equal(t, tt.want, tt.tx.SignableBytes())
-			require.NotEmpty(t, tt.want, "test not properly set up")
+			require.Equal(t, expect, tt.tx.SignableBytes())
 		})
 	}
 }

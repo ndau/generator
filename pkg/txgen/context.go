@@ -2,9 +2,20 @@ package txgen
 
 import (
 	"fmt"
+	"reflect"
 
+	"github.com/oneiro-ndev/metanode/pkg/meta/transaction"
 	"github.com/pkg/errors"
 )
+
+// https://stackoverflow.com/a/35791105/504550
+func getType(myvar interface{}) string {
+	t := reflect.TypeOf(myvar)
+	for t.Kind() == reflect.Ptr {
+		t = t.Elem()
+	}
+	return t.Name()
+}
 
 // Context defines all the info the template needs
 type Context struct {
@@ -13,6 +24,21 @@ type Context struct {
 
 // MakeContext makes a context object from ndau transactions
 func MakeContext() (*Context, error) {
+	return MakeContextWithExamples(nil)
+}
+
+// MakeContextWithExamples makes a context object from ndau transactions
+//
+// In addition to constructing the AST-based context, when provided with a list
+// of instantiated transactions, it will match them and inject them appropriately
+// into the context. This allows, for example, writing tests which include auto-
+// generated SignableBytes calls
+func MakeContextWithExamples(examples []metatx.Transactable) (*Context, error) {
+	examplesMap := make(map[string]metatx.Transactable)
+	for _, example := range examples {
+		examplesMap[getType(example)] = example
+	}
+
 	ast, err := ParseTransactions()
 	if err != nil {
 		return nil, errors.Wrap(err, "parsing transactions")
@@ -36,7 +62,7 @@ func MakeContext() (*Context, error) {
 			return nil, fmt.Errorf("tx %s not found", n)
 		}
 
-		transaction, err := ParseTransaction(n, def.Definition)
+		transaction, err := ParseTransaction(n, def.Definition, examplesMap)
 		if err != nil {
 			return nil, errors.Wrap(err, fmt.Sprintf("parsing %s tx", n))
 		}

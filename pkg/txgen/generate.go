@@ -1,9 +1,10 @@
 package txgen
 
-// signable bytes
-//go:generate go run $GOPATH/src/github.com/oneiro-ndev/generator/cmd/generate_txgen
-//go:generate goimports -w $GOPATH/src/github.com/oneiro-ndev/ndau/pkg/ndau/signable_bytes_gen.go
+//go:generate go run $GOPATH/src/github.com/oneiro-ndev/generator/cmd/generate
+//go:generate go run $GOPATH/src/github.com/oneiro-ndev/generator/cmd/json_literals
+//go:generate go run $GOPATH/src/github.com/oneiro-ndev/generator/cmd/maketests
+//go:generate tar -cjf $GOPATH/src/github.com/oneiro-ndev/generator/examples.tar.bz2 -C $GOPATH/src/github.com/oneiro-ndev/generator/ examples
+// //go:generate rm -rf $GOPATH/src/github.com/oneiro-ndev/generator/cmd/json_literals
+// //go:generate rm -rf $GOPATH/src/github.com/oneiro-ndev/generator/cmd/maketests
 
-// constructors
-//go:generate go run $GOPATH/src/github.com/oneiro-ndev/generator/cmd/generate_txgen --template $GOPATH/src/github.com/oneiro-ndev/generator/pkg/txgen/constructors.go.tmpl --output $GOPATH/src/github.com/oneiro-ndev/ndau/pkg/ndau/constructors_gen.go
-//go:generate goimports -w $GOPATH/src/github.com/oneiro-ndev/ndau/pkg/ndau/constructors_gen.go
+//go:generate find $GOPATH/src/github.com/oneiro-ndev/ndau/pkg/ndau/ -name "*_gen*.go" -maxdepth 1 -exec goimports -w {} ;
