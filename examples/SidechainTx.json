@@ -1,12 +1,12 @@
 {
-  "source": "ndad32zv2cugaydh2gtycxgvny8esp5vk3i67dawrqpck7a2",
-  "sidechain_id": 178,
-  "sidechain_signable_bytes": "CGpi9Ti1amBHfAdR",
+  "source": "ndagsdx4pgt8x5tqgktthz47cwtwbekegpim99pmfuctz796",
+  "sidechain_id": 48,
+  "sidechain_signable_bytes": "JXOPWaJy/J85qrCj",
   "sidechain_signatures": [
-    "a4jadtcaayfbjh7wm5vngm6zwtcykwkmhghsnfps5546kfgkczkzcwbpenpisrd7smysn8bid3f2ghkypbvdsaqh37vkh8h3dni8ckmiu7uwdhwue25y2cg5"
+    "a4jadtca9nqzk8zkptvq6keq3yucnbw5zf9czuw7r2pjzxvw7v927pdtgt6rmcim7uhs5b7zrpdt4dkb2439g73twzba5buekw54mq2jmfm47tz5tmq9uyu5"
   ],
   "sequence": 666378943674263,
   "signatures": [
-    "a4jadtcaais4jhnumabj8z6s6dh7k46pzbaxmtw8z4kbxvg7wubt2ebz3yi5rwegfv8j4k3uk5bcamna59ver4vvhmmgx94rbgydecieg84f8hh2v6xpe9hn"
+    "a4jadtcaxf7r2nsiwx9vgk3pw7ugiq4ihhtjquc8yyd382nvqmaffj2v2tqrv6e9cnyuv55w8ybai3ia7en8h2r4jefzghussdtjcj4jgvcfmfx9ey86qm9q"
   ]
 }
