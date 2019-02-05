@@ -3,12 +3,8 @@ name = "github.com/oneiro-ndev/metanode"
 version = "~v0.12"
 
 [[constraint]]
-name = "github.com/oneiro-ndev/ndau"
-branch = "eas-chaos-57"
-
-[[constraint]]
 name = "github.com/oneiro-ndev/ndaumath"
-branch = "eas-chaos-57"
+version = "~v0.10"
 
 [[override]]
 name = "github.com/attic-labs/graphql"
