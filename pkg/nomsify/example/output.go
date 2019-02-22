@@ -5,11 +5,10 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/oneiro-ndev/ndaumath/pkg/address"
-
 	"github.com/attic-labs/noms/go/marshal"
 	nt "github.com/attic-labs/noms/go/types"
 	"github.com/oneiro-ndev/ndau/pkg/ndau/backing"
+	"github.com/oneiro-ndev/ndaumath/pkg/address"
 	"github.com/oneiro-ndev/ndaumath/pkg/signature"
 	math "github.com/oneiro-ndev/ndaumath/pkg/types"
 	util "github.com/oneiro-ndev/noms-util"
@@ -197,7 +196,8 @@ func (ad *AccountData) UnmarshalNoms(value nt.Value) (err error) {
 		if err == nil {
 			switch name {
 			case "Balance":
-				balance, err := util.IntFrom(value)
+				var balance util.Int
+				balance, err = util.IntFrom(value)
 				if err != nil {
 					err = errors.Wrap(err, "AccountData.UnmarshalNoms->Balance")
 					return
@@ -435,7 +435,8 @@ func (ad *AccountData) UnmarshalNoms(value nt.Value) (err error) {
 						)
 					}
 				}
-				currencySeatDateValue, err := util.IntFrom(value)
+				var currencySeatDateValue util.Int
+				currencySeatDateValue, err = util.IntFrom(value)
 				if err != nil {
 					err = errors.Wrap(err, "AccountData.UnmarshalNoms->CurrencySeatDate")
 					return
@@ -463,7 +464,8 @@ func (ad *AccountData) UnmarshalNoms(value nt.Value) (err error) {
 					)
 				}
 			case "UncreditedEAI":
-				uncreditedEAI, err := util.IntFrom(value)
+				var uncreditedEAI util.Int
+				uncreditedEAI, err = util.IntFrom(value)
 				if err != nil {
 					err = errors.Wrap(err, "AccountData.UnmarshalNoms->UncreditedEAI")
 					return
