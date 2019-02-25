@@ -1,0 +1,16 @@
+package {{.Package}}
+
+import (
+	"encoding/base64"
+	"fmt"
+	"reflect"
+
+	"github.com/attic-labs/noms/go/marshal"
+	nt "github.com/attic-labs/noms/go/types"
+	"github.com/oneiro-ndev/ndau/pkg/ndau/backing"
+	"github.com/oneiro-ndev/ndaumath/pkg/address"
+	"github.com/oneiro-ndev/ndaumath/pkg/signature"
+	math "github.com/oneiro-ndev/ndaumath/pkg/types"
+	util "github.com/oneiro-ndev/noms-util"
+	"github.com/pkg/errors"
+)
