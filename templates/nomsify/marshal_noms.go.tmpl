@@ -1,99 +1,117 @@
 {{define "decompose"}}
-    {{if IsSlice . -}}
+    // template decompose: {{.Name}} ({{.Type}}->{{.Expr}})
+    {{- if .IsPrimitive}}
+    {{- else if .IsSlice}}
         {{template "slice" .}}
-    {{- else if IsPointer .}}
+    {{- else if .IsSet}}
+        {{template "set" .}}
+    {{- else if .IsPointer }}
         {{template "pointer" .}}
-    {{- else if IsTextMarshaler .}}
+    {{- else if .IsTextMarshaler }}
         {{template "textmarshaler" .}}
-    {{- else if IsNomsMarshaler .}}
-        {{template "nomsmarshaler"}}
     {{- else}}
-        {{ Primitive .}}
+        {{template "nomsmarshaler" .}}
     {{- end}}
 {{end}}
 {{define "decompose_value"}}
-    {{if IsSlice . -}}
-        {{template "slice_value" .}}
-    {{- else if IsPointer .}}
-        {{template "pointer_value" .}}
-    {{- else if IsTextMarshaler .}}
-        {{template "textmarshaler_value" .}}
-    {{- else if IsNomsMarshaler .}}
-        {{template "nomsmarshaler_value"}}
+    {{- if .IsPrimitive}}
+        {{- .MarshalPrimitive .Name}}
+    {{- else if .IsSlice}}
+        {{- template "slice_value" .}}
+    {{- else if .IsSet}}
+        {{- template "set_value" .}}
+    {{- else if .IsPointer }}
+        {{- template "pointer_value" .}}
+    {{- else if .IsTextMarshaler }}
+        {{- template "textmarshaler_value" .}}
     {{- else}}
-        {{.}}
-    {{- end}}
+        {{- template "nomsmarshaler_value" .}}
+    {{- end -}}
 {{end}}
-{{define "slice" -}}
-    {{. | LowerFirst}}Items := make([]nt.Value, 0, len(i.{{.}}))
-	for _, {{. | LowerFirst}}Item := range i.{{.}} {
-		{{template "decompose" (. | LowerFirst | printf "%sItem")}}
-		{{.Name | LowerFirst}}Items = append(
-			{{.Name | LowerFirst}}Items,
-            {{template "decompose_value" (. | LowerFirst | printf "%sItem")}},
+
+{{define "nomsmarshaler" -}}
+    // template nomsmarshaler: {{.Name}}
+    {{.LocalName}}Value, err := {{.Name}}.MarshalNoms(vrw)
+    if err != nil {
+        return nil, errors.Wrap(err, "MarshalNoms->{{.Name}}.MarshalNoms")
+    }
+{{- end}}
+{{define "nomsmarshaler_value"}}{{.LocalName}}Value{{end}}
+{{define "pointer" -}}
+    // template pointer:  {{.Name}}
+    var {{.LocalName}}Unptr nt.Value
+    if {{.Name}} == nil {
+        {{.LocalName}}Unptr = {{(.LocalName | printf "%sUnptr" | .Inner).MarshalZero}}
+    } else {
+        {{template "decompose" (.Name | printf "%s" | .Inner)}}
+        {{.LocalName}}Unptr = {{template "decompose_value" (.Name | printf "%s" | .Inner)}}
+    }
+{{- end}}
+{{define "pointer_value"}}{{.LocalName}}Unptr{{end}}
+{{define "set" -}}
+    {{.LocalName}}Items := make([]nt.Value, 0, len({{.Name}}))
+	for {{.LocalName}}Item := range {{.Name}} {
+		{{.LocalName}}Items = append(
+			{{.LocalName}}Items,
+			nt.String({{.LocalName}}Item),
 		)
 	}
-	{{. | LowerFirst}}Value := nt.NewList(vrw, {{. | LowerFirst}}Items...)
 {{- end}}
-{{define "slice_value" -}}
-    {{. | LowerFirst}}Value
+{{define "set_value"}}nt.NewSet(vrw, {{.LocalName}}Items...){{end}}
+{{define "slice" -}}
+    // template slice: {{.Name}}
+    {{.LocalName}}Items := make([]nt.Value, 0, len({{.Name}}))
+	for _, {{.LocalName}}Item := range {{.Name}} {
+		{{template "decompose" (.LocalName | printf "%sItem" | .Inner)}}
+		{{.LocalName}}Items = append(
+			{{.LocalName}}Items,
+            {{template "decompose_value" (.LocalName | printf "%sItem" | .Inner)}},
+		)
+	}
+	{{.LocalName}}Value := nt.NewList(vrw, {{.LocalName}}Items...)
 {{- end}}
+{{define "slice_value"}}{{.LocalName}}Value{{end}}
 {{define "textmarshaler" -}}
-    {{. | LowerFirst}}String, err := {{. | LowerFirst}}.MarshalText()
+    // template textmarshaler: {{.Name}}
+    {{.LocalName}}String, err := {{.Name}}.MarshalText()
     if err != nil {
-        return nil, err
+        return nil, errors.Wrap(err, "MarshalNoms->{{.Name}}.MarshalText")
     }
 {{- end}}
-{{define "textmarshaler_value" -}}
-    {{. | LowerFirst}}String
-{{- end}}
-{{define "nomsmarshaler" -}}
-    {{. | LowerFirst}}Value, err := {{. | LowerFirst}}.MarshalNoms(vrw)
-    if err != nil {
-        return nil, err
-    }
-{{- end}}
-{{define "nomsmarshaler_value" -}}
-    {{. | LowerFirst}}Value
-{{- end}}
-{{define "pointer" -}}
-    var {{. | LowerFirst}}Value nt.Value
-    if i.{{.}} == nil {
-        {{template "decompose" (Zero .)}}
-        {{. | LowerFirst}}Unptr := {{template "decompose_value" (Zero .)}}
-    } else {
-        {{template "decompose" .}}
-        {{. | LowerFirst}}Unptr := {{template "decompose_value" .}}
-    }
-{{- end}}
-{{define "pointer_value" -}}
-    {{. | LowerFirst}}Unptr
-{{- end}}
+{{define "textmarshaler_value"}}nt.String({{.LocalName}}String){{end}}
+
 {{define "marshal_noms"}}
 var {{.Type | LowerFirst}}StructTemplate nt.StructTemplate
 
 func init() {
 	{{.Type | LowerFirst}}StructTemplate = nt.MakeStructTemplate("{{.Type}}", []string{
         {{range .SortedFields -}}
-        {{.Name}},
-        {{- end}}
+            "{{.LocalName}}",
+        {{end -}}
 	})
 }
 
 // MarshalNoms implements noms/go/marshal.Marshaler
-func (ad {{.Type}}) MarshalNoms(vrw nt.ValueReadWriter) ({{.Type | LowerFirst}}Value nt.Value, err error) {
-    {{range .Fields -}}
-    {{if .NeedsTransform}}
-    {{template "decompose" .Name}}
-    {{- end}}
+func (x {{.Type}}) MarshalNoms(vrw nt.ValueReadWriter) ({{.Type | LowerFirst}}Value nt.Value, err error) {
+    {{- range .Fields}}
+        // {{.Name}} ({{.Type}}->{{.Expr}}) is primitive: {{.IsPrimitive}}
+        {{if not .IsPrimitive}}
+            {{- template "decompose" .}}
+        {{- end}}
     {{- end}}
 
 	return {{.Type | LowerFirst}}StructTemplate.NewStruct([]nt.Value{
         {{range .SortedFields -}}
-        {{if .NeedsTransform}}{{template "decompose_value" .Name}}{{else}}{{Primitive .Name}}{{end}}
-        {{- end}}
+            // {{.Name}} ({{.Type}})
+            {{if .IsPrimitive}}
+                {{.MarshalPrimitive (printf "%s" .Name)}}
+            {{- else -}}
+                {{- template "decompose_value" .}}
+            {{- end}},
+        {{end -}}
 	}), nil
 }
 
 var _ marshal.Marshaler = (*{{.Type}})(nil)
+
 {{end}}

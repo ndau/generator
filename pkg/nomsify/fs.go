@@ -20,6 +20,6 @@ func initGenerated(fromPath string, pkg string) (*bufio.Writer, *os.File, error)
 	}
 	w := bufio.NewWriter(f)
 
-	writeHeader(pkg, w)
+	err = writeHeader(pkg, w)
 	return w, f, err
 }

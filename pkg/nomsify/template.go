@@ -1,7 +1,6 @@
 package nomsify
 
 import (
-	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -28,21 +27,11 @@ func init() {
 	marshalNoms := filepath.Join(prefix, marshalNomsPath)
 
 	tmpl, err = template.New("header").Funcs(template.FuncMap{
-		"IsNomsMarshaler": isNomsMarshaler,
-		"IsPointer":       isPointer,
-		"IsSlice":         isSlice,
-		"IsTextMarshaler": isTextMarshaler,
-		"LowerFirst":      lowerFirst,
-		"Primitive":       primitive,
-		"Zero":            zero,
+		"LowerFirst": lowerFirst,
 	}).ParseFiles(header, marshalNoms)
 	if err != nil {
 		panic(err)
 	}
-}
-
-func isSlice(s string) bool {
-	return strings.HasPrefix(s, "[]")
 }
 
 func lowerFirst(s string) string {
@@ -52,26 +41,4 @@ func lowerFirst(s string) string {
 	r, l := utf8.DecodeRuneInString(s)
 	r = unicode.ToLower(r)
 	return string(r) + s[l:]
-}
-
-func zero(s string) string {
-	return fmt.Sprintf("*new(%s)", s)
-}
-
-// TODO: from here on, these functions need to get real implementations
-
-func isPointer(s string) bool {
-	return strings.HasPrefix(s, "*")
-}
-
-func isTextMarshaler(s string) bool {
-	return false
-}
-
-func isNomsMarshaler(s string) bool {
-	return false
-}
-
-func primitive(s string) string {
-	return s
 }
