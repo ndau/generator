@@ -51,24 +51,24 @@
 {{define "set" -}}
     // template set:  {{.Name}}
     {{.MakeLocal}}Items := make([]nt.Value, 0, len({{.Name}}))
-	for {{.MakeLocal}}Item := range {{.Name}} {
-		{{.MakeLocal}}Items = append(
-			{{.MakeLocal}}Items,
-			nt.String({{.MakeLocal}}Item),
-		)
-	}
+    for {{.MakeLocal}}Item := range {{.Name}} {
+        {{.MakeLocal}}Items = append(
+            {{.MakeLocal}}Items,
+            nt.String({{.MakeLocal}}Item),
+        )
+    }
 {{- end}}
 {{define "set_value"}}nt.NewSet(vrw, {{.MakeLocal}}Items...){{end}}
 {{define "slice" -}}
     // template slice: {{.Name}}
     {{.MakeLocal}}Items := make([]nt.Value, 0, len({{.Name}}))
-	for _, {{.MakeLocal}}Item := range {{.Name}} {
+    for _, {{.MakeLocal}}Item := range {{.Name}} {
         {{template "decompose" (.MakeLocal | printf "%sItem" | .Inner)}}
-		{{.MakeLocal}}Items = append(
-			{{.MakeLocal}}Items,
+        {{.MakeLocal}}Items = append(
+            {{.MakeLocal}}Items,
             {{template "decompose_value" (.MakeLocal | printf "%sItem" | .Inner)}},
-		)
-	}
+        )
+    }
 {{- end}}
 {{define "slice_value"}}nt.NewList(vrw, {{.MakeLocal}}Items...){{end}}
 {{define "textmarshaler" -}}
@@ -84,11 +84,11 @@
 var {{.Type | LowerFirst}}StructTemplate nt.StructTemplate
 
 func init() {
-	{{.Type | LowerFirst}}StructTemplate = nt.MakeStructTemplate("{{.Type}}", []string{
+    {{.Type | LowerFirst}}StructTemplate = nt.MakeStructTemplate("{{.Type}}", []string{
         {{range .SortedFields -}}
             "{{.BareName}}",
         {{end -}}
-	})
+    })
 }
 
 // MarshalNoms implements noms/go/marshal.Marshaler
@@ -100,7 +100,7 @@ func (x {{.Type}}) MarshalNoms(vrw nt.ValueReadWriter) ({{.Type | LowerFirst}}Va
         {{- end}}
     {{- end}}
 
-	return {{.Type | LowerFirst}}StructTemplate.NewStruct([]nt.Value{
+    return {{.Type | LowerFirst}}StructTemplate.NewStruct([]nt.Value{
         {{range .SortedFields -}}
             // {{.Name}} ({{.Type}})
             {{if .IsPrimitive}}
@@ -109,7 +109,7 @@ func (x {{.Type}}) MarshalNoms(vrw nt.ValueReadWriter) ({{.Type | LowerFirst}}Va
                 {{- template "decompose_value" .}}
             {{- end}},
         {{end -}}
-	}), nil
+    }), nil
 }
 
 var _ marshal.Marshaler = (*{{.Type}})(nil)
