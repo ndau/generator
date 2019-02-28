@@ -63,15 +63,15 @@ func (c context) SortedFields() []field {
 	for _, f := range fields {
 		if f.IsPointer() {
 			ptrspecifiers = append(ptrspecifiers, field{
-				Name:         "Has" + f.Name,
+				Name:         "x.Has" + f.BareName(),
 				typeOverride: "bool",
-				context:      &c,
+				Context:      &c,
 			})
 		}
 	}
 	fields = append(fields, ptrspecifiers...)
 
-	sort.Slice(fields, func(i, j int) bool { return fields[i].LocalName() < fields[j].LocalName() })
+	sort.Slice(fields, func(i, j int) bool { return fields[i].BareName() < fields[j].BareName() })
 	return fields
 }
 

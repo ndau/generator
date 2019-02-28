@@ -31,54 +31,54 @@
 
 {{define "nomsmarshaler" -}}
     // template nomsmarshaler: {{.Name}}
-    {{.LocalName}}Value, err := {{.Name}}.MarshalNoms(vrw)
+    {{.MakeLocal}}Value, err := {{.Name}}.MarshalNoms(vrw)
     if err != nil {
-        return nil, errors.Wrap(err, "MarshalNoms->{{.Name}}.MarshalNoms")
+        return nil, errors.Wrap(err, "{{.Context.Type}}.MarshalNoms->{{.BareName}}.MarshalNoms")
     }
 {{- end}}
-{{define "nomsmarshaler_value"}}{{.LocalName}}Value{{end}}
+{{define "nomsmarshaler_value"}}{{.MakeLocal}}Value{{end}}
 {{define "pointer" -}}
     // template pointer:  {{.Name}}
-    var {{.LocalName}}Unptr nt.Value
+    var {{.MakeLocal}}Unptr nt.Value
     if {{.Name}} == nil {
-        {{.LocalName}}Unptr = {{(.LocalName | printf "%sUnptr" | .Inner).MarshalZero}}
+        {{.MakeLocal}}Unptr = {{(.Inner .Name).MarshalZero}}
     } else {
-        {{template "decompose" (.Name | printf "%s" | .Inner)}}
-        {{.LocalName}}Unptr = {{template "decompose_value" (.Name | printf "%s" | .Inner)}}
+        {{template "decompose" (.Name | Deref | .Inner)}}
+        {{.MakeLocal}}Unptr = {{template "decompose_value" (.Name | Deref | .Inner)}}
     }
 {{- end}}
-{{define "pointer_value"}}{{.LocalName}}Unptr{{end}}
+{{define "pointer_value"}}{{.MakeLocal}}Unptr{{end}}
 {{define "set" -}}
-    {{.LocalName}}Items := make([]nt.Value, 0, len({{.Name}}))
-	for {{.LocalName}}Item := range {{.Name}} {
-		{{.LocalName}}Items = append(
-			{{.LocalName}}Items,
-			nt.String({{.LocalName}}Item),
+    // template set:  {{.Name}}
+    {{.MakeLocal}}Items := make([]nt.Value, 0, len({{.Name}}))
+	for {{.MakeLocal}}Item := range {{.Name}} {
+		{{.MakeLocal}}Items = append(
+			{{.MakeLocal}}Items,
+			nt.String({{.MakeLocal}}Item),
 		)
 	}
 {{- end}}
-{{define "set_value"}}nt.NewSet(vrw, {{.LocalName}}Items...){{end}}
+{{define "set_value"}}nt.NewSet(vrw, {{.MakeLocal}}Items...){{end}}
 {{define "slice" -}}
     // template slice: {{.Name}}
-    {{.LocalName}}Items := make([]nt.Value, 0, len({{.Name}}))
-	for _, {{.LocalName}}Item := range {{.Name}} {
-		{{template "decompose" (.LocalName | printf "%sItem" | .Inner)}}
-		{{.LocalName}}Items = append(
-			{{.LocalName}}Items,
-            {{template "decompose_value" (.LocalName | printf "%sItem" | .Inner)}},
+    {{.MakeLocal}}Items := make([]nt.Value, 0, len({{.Name}}))
+	for _, {{.MakeLocal}}Item := range {{.Name}} {
+        {{template "decompose" (.MakeLocal | printf "%sItem" | .Inner)}}
+		{{.MakeLocal}}Items = append(
+			{{.MakeLocal}}Items,
+            {{template "decompose_value" (.MakeLocal | printf "%sItem" | .Inner)}},
 		)
 	}
-	{{.LocalName}}Value := nt.NewList(vrw, {{.LocalName}}Items...)
 {{- end}}
-{{define "slice_value"}}{{.LocalName}}Value{{end}}
+{{define "slice_value"}}nt.NewList(vrw, {{.MakeLocal}}Items...){{end}}
 {{define "textmarshaler" -}}
     // template textmarshaler: {{.Name}}
-    {{.LocalName}}String, err := {{.Name}}.MarshalText()
+    {{.MakeLocal}}String, err := {{.Name}}.MarshalText()
     if err != nil {
-        return nil, errors.Wrap(err, "MarshalNoms->{{.Name}}.MarshalText")
+        return nil, errors.Wrap(err, "{{.Context.Type}}.MarshalNoms->{{.BareName}}.MarshalText")
     }
 {{- end}}
-{{define "textmarshaler_value"}}nt.String({{.LocalName}}String){{end}}
+{{define "textmarshaler_value"}}nt.String({{.MakeLocal}}String){{end}}
 
 {{define "marshal_noms"}}
 var {{.Type | LowerFirst}}StructTemplate nt.StructTemplate
@@ -86,7 +86,7 @@ var {{.Type | LowerFirst}}StructTemplate nt.StructTemplate
 func init() {
 	{{.Type | LowerFirst}}StructTemplate = nt.MakeStructTemplate("{{.Type}}", []string{
         {{range .SortedFields -}}
-            "{{.LocalName}}",
+            "{{.BareName}}",
         {{end -}}
 	})
 }

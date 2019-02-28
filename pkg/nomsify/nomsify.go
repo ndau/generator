@@ -1,7 +1,6 @@
 package nomsify
 
 import (
-	"fmt"
 	"io"
 )
 
@@ -22,8 +21,10 @@ func Implement(path, typeName string, out io.Writer) error {
 	if err != nil {
 		return err
 	}
-	// TODO: this is a mostly-unimplemented WIP doing only enough to get started
-	// TODO: replace this with a template
-	fmt.Fprintf(out, "func (i *%s) UnmarshalNoms(nt.Value) error {\n\treturn errors.New(\"unimplemented\")\n}\n\n", typeName)
+	err = tmpl.ExecuteTemplate(out, "unmarshal_noms", context)
+	if err != nil {
+		return err
+	}
+
 	return err
 }

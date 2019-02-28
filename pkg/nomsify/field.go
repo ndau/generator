@@ -10,11 +10,12 @@ import (
 )
 
 type field struct {
-	Name         string
-	definition   *ast.Field
-	expr         ast.Expr
-	typeOverride string
-	context      *context
+	Name          string
+	definition    *ast.Field
+	expr          ast.Expr
+	typeOverride  string
+	valueOverride string
+	Context       *context
 }
 
 func (c context) newField(name string, definition *ast.Field) field {
@@ -22,9 +23,18 @@ func (c context) newField(name string, definition *ast.Field) field {
 		Name:       "x." + name,
 		definition: definition,
 		expr:       definition.Type,
-		context:    &c,
+		Context:    &c,
 	}
 	return f
+}
+
+func (f field) BareName() string {
+	name := f.Name
+	if strings.HasPrefix(name, "(*") && strings.HasSuffix(name, ")") {
+		name = name[2 : len(name)-1]
+	}
+	fields := strings.Split(name, ".")
+	return fields[len(fields)-1]
 }
 
 func (f field) Expr() string {
@@ -34,7 +44,7 @@ func (f field) Expr() string {
 func (f field) Inner(name string) field {
 	i := field{
 		Name:    name,
-		context: f.context,
+		Context: f.Context,
 	}
 	switch x := f.expr.(type) {
 	case *ast.ArrayType:
@@ -43,10 +53,18 @@ func (f field) Inner(name string) field {
 		i.expr = x.X
 	case *ast.StarExpr:
 		i.expr = x.X
-		// don't forget to dereference the literals
-		i.Name = fmt.Sprintf("(*%s)", i.Name)
 	}
 	return i
+}
+
+func (f field) InnerValue(name, value string) field {
+	i := f.Inner(name)
+	i.valueOverride = value
+	return i
+}
+
+func (f field) IsCollection() bool {
+	return f.Type() != "[]byte" && f.IsSlice() || f.IsSet()
 }
 
 func (f field) IsNumeric() bool {
@@ -55,6 +73,17 @@ func (f field) IsNumeric() bool {
 		return true
 	}
 	return false
+}
+
+func (f field) IsNomsMarshaler() bool {
+	switch {
+	case f.IsPointer():
+		return f.Inner("").IsNomsMarshaler()
+	case f.IsPrimitive(), f.IsSet(), f.IsSlice(), f.IsTextMarshaler():
+		return false
+	default:
+		return true
+	}
 }
 
 func (f field) IsPointer() bool {
@@ -100,12 +129,8 @@ func (f field) IsTextMarshaler() bool {
 	return false
 }
 
-func (f field) LocalName() string {
-	safe := strings.ReplaceAll(f.Name, "*", "")
-	safe = strings.ReplaceAll(safe, "(", "")
-	safe = strings.ReplaceAll(safe, ")", "")
-	parts := strings.Split(safe, ".")
-	return lowerFirst(parts[len(parts)-1])
+func (f field) MakeLocal() string {
+	return lowerFirst(f.BareName())
 }
 
 func (f field) MarshalPrimitive(expr string) string {
@@ -145,13 +170,39 @@ func (f field) MarshalZero() string {
 	return "nt.Bool(false)"
 }
 
+func (f field) NomsType() string {
+	switch {
+	case f.IsPointer():
+		return f.Inner("").NomsType()
+	case f.IsNomsMarshaler():
+		return "nt.Struct"
+	case f.IsSet():
+		return "nt.Set"
+	case f.Type() == "[]byte":
+		return "nt.String"
+	case f.IsSlice():
+		return "nt.List"
+	case f.Type() == "bool":
+		return "nt.Bool"
+	default:
+		return "nt.String"
+	}
+}
+
 func (f field) Type() string {
 	if f.typeOverride != "" {
 		return f.typeOverride
 	}
 	var buf bytes.Buffer
-	printer.Fprint(&buf, f.context.fset, f.expr)
+	printer.Fprint(&buf, f.Context.fset, f.expr)
 	return buf.String()
+}
+
+func (f field) Value() string {
+	if f.valueOverride == "" {
+		return "value"
+	}
+	return f.valueOverride
 }
 
 func (f field) Zero() string {
