@@ -5,6 +5,8 @@
         {{template "slice" .}}
     {{- else if .IsSet}}
         {{template "set" .}}
+    {{- else if .IsMap}}
+        {{template "map" .}}
     {{- else if .IsPointer }}
         {{template "pointer" .}}
     {{- else if .IsTextMarshaler }}
@@ -20,6 +22,8 @@
         {{- template "slice_value" .}}
     {{- else if .IsSet}}
         {{- template "set_value" .}}
+    {{- else if .IsMap}}
+        {{template "map_value" .}}
     {{- else if .IsPointer }}
         {{- template "pointer_value" .}}
     {{- else if .IsTextMarshaler }}
@@ -29,6 +33,20 @@
     {{- end -}}
 {{end}}
 
+
+{{define "map" -}}
+    // template map: {{.Name}}
+    {{.MakeLocal}}KVs := make([]nt.Value, 0, len({{.Name}})*2)
+    for {{.MakeLocal}}Key, {{.MakeLocal}}Value := range {{.Name}} {
+        {{template "decompose" (.MakeLocal | printf "%sValue" | .Inner)}}
+        {{.MakeLocal}}KVs = append(
+            {{.MakeLocal}}KVs,
+            nt.String({{.MakeLocal}}Key),
+            {{template "decompose_value" (.MakeLocal | printf "%sValue" | .Inner)}},
+        )
+    }
+{{- end}}
+{{define "map_value"}}nt.NewMap(vrw, {{.MakeLocal}}KVs){{end}}
 {{define "nomsmarshaler" -}}
     // template nomsmarshaler: {{.Name}}
     {{.MakeLocal}}Value, err := {{.Name}}.MarshalNoms(vrw)

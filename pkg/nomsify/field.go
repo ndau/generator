@@ -49,6 +49,8 @@ func (f field) Inner(name string) field {
 	switch x := f.expr.(type) {
 	case *ast.ArrayType:
 		i.expr = x.Elt
+	case *ast.MapType:
+		i.expr = x.Value
 	case *ast.SliceExpr:
 		i.expr = x.X
 	case *ast.StarExpr:
@@ -64,7 +66,11 @@ func (f field) InnerValue(name, value string) field {
 }
 
 func (f field) IsCollection() bool {
-	return f.Type() != "[]byte" && f.IsSlice() || f.IsSet()
+	return f.Type() != "[]byte" && f.IsSlice() || f.IsSet() || f.IsMap()
+}
+
+func (f field) IsMap() bool {
+	return strings.HasPrefix(f.Type(), "map[string]")
 }
 
 func (f field) IsNumeric() bool {
@@ -79,7 +85,7 @@ func (f field) IsNomsMarshaler() bool {
 	switch {
 	case f.IsPointer():
 		return f.Inner("").IsNomsMarshaler()
-	case f.IsPrimitive(), f.IsSet(), f.IsSlice(), f.IsTextMarshaler():
+	case f.IsPrimitive(), f.IsSet(), f.IsMap(), f.IsSlice(), f.IsTextMarshaler():
 		return false
 	default:
 		return true
@@ -178,6 +184,8 @@ func (f field) NomsType() string {
 		return "nt.Struct"
 	case f.IsSet():
 		return "nt.Set"
+	case f.IsMap():
+		return "nt.Map"
 	case f.Type() == "[]byte":
 		return "nt.String"
 	case f.IsSlice():

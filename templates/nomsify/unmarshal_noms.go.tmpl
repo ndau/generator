@@ -6,6 +6,8 @@
         {{template "u_slice" .}}
     {{- else if .IsSet}}
         {{template "u_set" .}}
+    {{- else if .IsMap}}
+        {{template "u_map" .}}
     {{- else if .IsPointer }}
         {{template "u_pointer" .}}
     {{- else if .IsTextMarshaler }}
@@ -21,6 +23,8 @@
         {{- template "u_slice_value" .}}
     {{- else if .IsSet}}
         {{- template "u_set_value" .}}
+    {{- else if .IsMap}}
+        {{template "u_map_value" .}}
     {{- else if .IsPointer }}
         {{- template "u_pointer_value" .}}
     {{- else if .IsTextMarshaler }}
@@ -30,6 +34,34 @@
     {{- end}}
 {{- end}}
 
+{{define "u_map" -}}
+    // template u_map: {{.Name}}
+    if {{.MakeLocal}}Map, ok := {{.Value}}.(nt.Map); ok {
+        {{.Name}} = make({{.Type}})
+        {{.MakeLocal}}List.Iter(func({{.MakeLocal}}Key, {{.MakeLocal}}Value nt.Value) (stop bool) {
+            {{.MakeLocal}}KeyString, ok := {{.MakeLocal}}Key.(nt.String)
+            if !ok {
+                err = fmt.Errorf(
+                    "{{.Context.Type}}.UnmarshalNoms expected {{.MakeLocal}}Key to be a nt.String; found %s",
+                    reflect.TypeOf({{.MakeLocal}}Key),
+                )
+                return true
+            }
+            {{template "u_decompose" .InnerValue (.MakeLocal | printf "%sValue") (.MakeLocal | printf "%sValue")}}
+            if err != nil {
+                return true
+            }
+            {{.Name}}[string({{.MakeLocal}}KeyString)] = {{template "u_decompose_value" (.MakeLocal | printf "%sValue" | .Inner)}}
+            return false
+        })
+    } else {
+        err = fmt.Errorf(
+            "{{.Context.Type}}.UnmarshalNoms expected {{.Name}} to be a nt.Map; found %s",
+            reflect.TypeOf({{.Value}}),
+        )
+    }
+{{- end}}
+{{define "u_map_value"}}{{.Name}}{{end}}
 {{define "u_nomsmarshaler" -}}
     // template u_nomsmarshaler: {{.Name}}
     var {{.MakeLocal}}Instance {{.Type}}
