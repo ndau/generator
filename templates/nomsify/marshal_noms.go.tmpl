@@ -46,7 +46,7 @@
         )
     }
 {{- end}}
-{{define "map_value"}}nt.NewMap(vrw, {{.MakeLocal}}KVs){{end}}
+{{define "map_value"}}nt.NewMap(vrw, {{.MakeLocal}}KVs...){{end}}
 {{define "nomsmarshaler" -}}
     // template nomsmarshaler: {{.Name}}
     {{.MakeLocal}}Value, err := {{.Name}}.MarshalNoms(vrw)

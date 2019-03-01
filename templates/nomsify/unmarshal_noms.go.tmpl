@@ -38,7 +38,7 @@
     // template u_map: {{.Name}}
     if {{.MakeLocal}}Map, ok := {{.Value}}.(nt.Map); ok {
         {{.Name}} = make({{.Type}})
-        {{.MakeLocal}}List.Iter(func({{.MakeLocal}}Key, {{.MakeLocal}}Value nt.Value) (stop bool) {
+        {{.MakeLocal}}Map.Iter(func({{.MakeLocal}}Key, {{.MakeLocal}}Value nt.Value) (stop bool) {
             {{.MakeLocal}}KeyString, ok := {{.MakeLocal}}Key.(nt.String)
             if !ok {
                 err = fmt.Errorf(
