@@ -145,7 +145,7 @@ func (f field) MarshalPrimitive(expr string) string {
 	}
 	// we need special handling for HasX injected fields
 	if strings.Contains(expr, "Has") {
-		return fmt.Sprintf("nt.Bool(%s != nil)", strings.ReplaceAll(expr, "Has", ""))
+		return fmt.Sprintf("nt.Bool(%s != nil)", strings.Replace(expr, "Has", "", -1))
 	}
 	switch f.Type() {
 	case "bool":
