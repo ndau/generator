@@ -1,12 +1,12 @@
 {
-  "source": "ndagsdx4pgt8x5tqgktthz47cwtwbekegpim99pmfuctz796",
-  "sidechain_id": 48,
-  "sidechain_signable_bytes": "JXOPWaJy/J85qrCj",
+  "source": "ndabp2tmru5xbtsm5j6ihuhwtmrz2ysk7qh3ehkd4vd5jyr2",
+  "sidechain_id": 111,
+  "sidechain_signable_bytes": "QLS1I0HufKxU6o0/",
   "sidechain_signatures": [
-    "a4jadtca9nqzk8zkptvq6keq3yucnbw5zf9czuw7r2pjzxvw7v927pdtgt6rmcim7uhs5b7zrpdt4dkb2439g73twzba5buekw54mq2jmfm47tz5tmq9uyu5"
+    "a4jadtcap2wr3xx28wzfphnu87i6scbiebejts73srdn694ab82zd8e3bz39yei4g4wz5685vbzyedzapuxcnjbxa9ebcew7zgys7dsuwgujkhxv67ak688r"
   ],
   "sequence": 666378943674263,
   "signatures": [
-    "a4jadtcaxf7r2nsiwx9vgk3pw7ugiq4ihhtjquc8yyd382nvqmaffj2v2tqrv6e9cnyuv55w8ybai3ia7en8h2r4jefzghussdtjcj4jgvcfmfx9ey86qm9q"
+    "a4jadtca993qc4h5mm94sp22eppsg9q8q5mik7xe3aer5xi2wysudhc97kr6njp8ihaf8gs4ssmtseaicep2x5k2tbmzhzgwkzxp54bkt67ucnun4h92cmuj"
   ]
 }

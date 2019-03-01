@@ -1,10 +1,10 @@
 {
-  "target": "ndaje62dh3hn8hghsf4967n49tak9ecndzaihzft6tucediw",
-  "ownership": "npuba8jadtbbed9mf84dp58d543fni4cjkwa38p4m25pb4n6fn542ysssf455ygfsrpbqcpdjuja",
+  "target": "ndap5p3gyxxhzj7g37rcu3rz8ei5mieef85ru8x9nwweke8d",
+  "ownership": "npuba8jadtbbeb6gtsenci99k3phntut2utadn46ua9tj8yer9gnik5m9v7ye4yx3nevtah8efz8",
   "validation_keys": [
-    "npuba8jadtbbebb2nnurig3u87frrcvami64kwhtcgq2xvytjjbdiksm88aeebhx32sugfipwpre"
+    "npuba8jadtbbeag3xntctezggdr9icapmg3iwmnx96yuwmzdvpppmmhb7b6i7e6xkepdwr2zxpwa"
   ],
-  "validation_script": "93iJOw5AWPKXu29o",
+  "validation_script": "1Z2ffArgOD8XiX3n",
   "sequence": 7142365320213337,
-  "signature": "a4jadtcaqq235a84m6wykxtuqw7h4tqmfex7ed7ewtt7r6cdpdyqpb9u69zb2nuna2jzpatikt7wfdytxhsgppz6bhash736uj3bxxp5ie2yt6e543vrkh8i"
+  "signature": "a4jadtcaq5xn9hf6j5wtuhhs9b86eaa2bjbdgsafgrj4tfzhh75cb33pq2zb2bxhqwvqwvqa96qa6rrgt7gtzzh2ea6fnch9adwckkj7wd3y7se26fjui8y3"
 }
