@@ -1,0 +1,210 @@
+{{define "u_decompose"}}
+    // template u_decompose: {{.Name}} ({{.Type}}->{{.Expr}})
+    {{- if .IsPrimitive}}
+        {{template "u_primitive" .}}
+    {{- else if .IsSlice}}
+        {{template "u_slice" .}}
+    {{- else if .IsSet}}
+        {{template "u_set" .}}
+    {{- else if .IsMap}}
+        {{template "u_map" .}}
+    {{- else if .IsPointer }}
+        {{template "u_pointer" .}}
+    {{- else if .IsTextMarshaler }}
+        {{template "u_textmarshaler" .}}
+    {{- else}}
+        {{template "u_nomsmarshaler" .}}
+    {{- end}}
+{{- end}}
+{{define "u_decompose_value"}}
+    {{- if .IsPrimitive}}
+        {{- template "u_primitive_value" .}}
+    {{- else if .IsSlice}}
+        {{- template "u_slice_value" .}}
+    {{- else if .IsSet}}
+        {{- template "u_set_value" .}}
+    {{- else if .IsMap}}
+        {{template "u_map_value" .}}
+    {{- else if .IsPointer }}
+        {{- template "u_pointer_value" .}}
+    {{- else if .IsTextMarshaler }}
+        {{- template "u_textmarshaler_value" .}}
+    {{- else}}
+        {{- template "u_nomsmarshaler_value" .}}
+    {{- end}}
+{{- end}}
+
+{{define "u_map" -}}
+    // template u_map: {{.Name}}
+    if {{.MakeLocal}}Map, ok := {{.Value}}.(nt.Map); ok {
+        {{.Name}} = make({{.Type}})
+        {{.MakeLocal}}Map.Iter(func({{.MakeLocal}}Key, {{.MakeLocal}}Value nt.Value) (stop bool) {
+            {{.MakeLocal}}KeyString, ok := {{.MakeLocal}}Key.(nt.String)
+            if !ok {
+                err = fmt.Errorf(
+                    "{{.Context.Type}}.UnmarshalNoms expected {{.MakeLocal}}Key to be a nt.String; found %s",
+                    reflect.TypeOf({{.MakeLocal}}Key),
+                )
+                return true
+            }
+            {{template "u_decompose" .InnerValue (.MakeLocal | printf "%sValue") (.MakeLocal | printf "%sValue")}}
+            if err != nil {
+                return true
+            }
+            {{.Name}}[string({{.MakeLocal}}KeyString)] = {{template "u_decompose_value" (.MakeLocal | printf "%sValue" | .Inner)}}
+            return false
+        })
+    } else {
+        err = fmt.Errorf(
+            "{{.Context.Type}}.UnmarshalNoms expected {{.Name}} to be a nt.Map; found %s",
+            reflect.TypeOf({{.Value}}),
+        )
+    }
+{{- end}}
+{{define "u_map_value"}}{{.Name}}{{end}}
+{{define "u_nomsmarshaler" -}}
+    // template u_nomsmarshaler: {{.Name}}
+    var {{.MakeLocal}}Instance {{.Type}}
+    err = {{.MakeLocal}}Instance.UnmarshalNoms({{.Value}})
+    err = errors.Wrap(err, "{{.Context.Type}}.UnmarshalNoms->{{.BareName}}")
+{{- end}}
+{{define "u_nomsmarshaler_value"}}{{.MakeLocal}}Instance{{end}}
+{{define "u_pointer" -}}
+    // template u_pointer:  {{.Name}}
+    if has{{.BareName}}Value, ok := vs.MaybeGet("Has{{.BareName}}"); ok {
+        if has{{.BareName}}, ok := has{{.BareName}}Value.(nt.Bool); ok {
+            if !has{{.BareName}} {
+                return
+            }
+        } else {
+            err = fmt.Errorf(
+                "{{.Context.Type}}.UnmarshalNoms expected Has{{.BareName}} to be a nt.Bool; found %s",
+                reflect.TypeOf(has{{.BareName}}Value),
+            )
+            return
+        }
+    } else {
+        err = fmt.Errorf(
+            "{{.Context.Type}}.UnmarshalNoms->{{.BareName}} is a pointer, so expected a Has{{.BareName}} field: not found",
+        )
+        return
+    }
+    {{template "u_decompose" (.Inner .Name)}}
+{{- end}}
+{{define "u_pointer_value"}}&{{template "u_decompose_value" (.Inner .Name)}}{{end}}
+{{define "u_primitive" -}}
+    // template u_primitive: {{.Name}}
+    {{- if .IsNumeric}}
+        var {{.MakeLocal}}Value util.Int
+        {{.MakeLocal}}Value, err = util.IntFrom({{.Value}})
+        if err != nil {
+            err = errors.Wrap(err, "{{.Context.Type}}.UnmarshalNoms->{{.BareName}}")
+            return
+        }
+    {{- else}}
+        {{.MakeLocal}}Value, ok := {{.Value}}.({{.NomsType}})
+        if !ok {
+            err = fmt.Errorf(
+                "{{.Context.Type}}.UnmarshalNoms expected {{.Value}} to be a {{.NomsType}}; found %s",
+                reflect.TypeOf({{.Value}}),
+            )
+        }
+    {{- end}}
+    {{.MakeLocal}}Typed := {{.Type}}({{.MakeLocal}}Value)
+{{- end}}
+{{define "u_primitive_value"}}{{.MakeLocal}}Typed{{end}}
+{{define "u_set" -}}
+    // template u_set: {{.Name}}
+    {{.Name}} = make(map[string]struct{})
+    if {{.MakeLocal}}Set, ok := {{.Value}}.(nt.Set); ok {
+        {{.MakeLocal}}Set.Iter(func({{.MakeLocal}}Item nt.Value) (stop bool) {
+            if {{.MakeLocal}}ItemString, ok := {{.MakeLocal}}Item.(nt.String); ok {
+                {{.Name}}[string({{.MakeLocal}}ItemString)] = struct{}{}
+            } else {
+                err = fmt.Errorf(
+                    "{{.Context.Type}}.AccountData.UnmarshalNoms expected {{.BareName}}Item to be a nt.String; found %s",
+                    reflect.TypeOf({{.Value}}),
+                )
+            }
+            return err != nil
+        })
+    } else {
+        err = fmt.Errorf(
+            "{{.Context.Type}}.AccountData.UnmarshalNoms expected {{.BareName}} to be a nt.Set; found %s",
+            reflect.TypeOf({{.Value}}),
+        )
+    }
+{{- end}}
+{{define "u_set_value"}}{{.Name}}{{end}}
+{{define "u_slice" -}}
+    // template u_slice: {{.Name}}
+    if {{.MakeLocal}}List, ok := {{.Value}}.(nt.List); ok {
+        {{.Name}} = make({{.Type}}, 0, {{.MakeLocal}}List.Len())
+        {{.MakeLocal}}List.Iter(func({{.MakeLocal}}Item nt.Value, idx uint64) (stop bool) {
+            {{template "u_decompose" .InnerValue (.MakeLocal | printf "%sItem") (.MakeLocal | printf "%sItem")}}
+            if err != nil {
+                return true
+            }
+            {{.Name}} = append({{.Name}}, {{template "u_decompose_value" (.MakeLocal | printf "%sItem" | .Inner)}})
+            return false
+        })
+    } else {
+        err = fmt.Errorf(
+            "{{.Context.Type}}.UnmarshalNoms expected {{.Name}} to be a nt.List; found %s",
+            reflect.TypeOf({{.Value}}),
+        )
+    }
+{{- end}}
+{{define "u_slice_value"}}{{.Name}}{{end}}
+{{define "u_textmarshaler" -}}
+    // template u_textmarshaler: {{.Name}}
+    var {{.MakeLocal}}Value {{.Type}}
+    if {{.MakeLocal}}String, ok := {{.Value}}.(nt.String); ok {
+        err = {{.MakeLocal}}Value.UnmarshalText([]byte({{.MakeLocal}}String))
+    } else {
+        err = fmt.Errorf(
+            "{{.Context.Type}}.UnmarshalNoms expected ValidationKeys Item to be a nt.String; found %s",
+            reflect.ValueOf({{.Name}}).Type(),
+        )
+    }
+{{- end}}
+{{define "u_textmarshaler_value"}}{{.MakeLocal}}Value{{end}}
+
+{{define "unmarshal_noms"}}
+// UnmarshalNoms implements noms/go/marshal.Unmarshaler
+//
+// This method makes no attempt to zeroize the provided struct; it simply
+// overwrites fields as they are found.
+func (x *{{.Type}}) UnmarshalNoms(value nt.Value) (err error) {
+    vs, ok := value.(nt.Struct)
+    if !ok {
+        return fmt.Errorf(
+            "{{.Type}}.UnmarshalNoms expected a nt.Value; found %s",
+            reflect.TypeOf(value),
+        )
+    }
+
+    // noms Struct.MaybeGet isn't efficient: it iterates over all fields of
+    // the struct until it finds one whose name happens to match the one sought.
+    // It's better to iterate once over the struct and set the fields of the
+    // target struct in arbitrary order.
+    vs.IterFields(func(name string, value nt.Value) {
+        if err == nil {
+            switch name {
+            {{- range .Fields}}
+            // {{.Name}} ({{.Type}}->{{.Expr}}) is primitive: {{.IsPrimitive}}
+            case "{{.BareName}}":
+                {{- template "u_decompose" .}}
+                {{if not .IsCollection }}
+                    {{.Name}} = {{template "u_decompose_value" .}}
+                {{end}}
+            {{- end}}
+            }
+        }
+    })
+    return
+}
+
+var _ marshal.Unmarshaler = (*{{.Type}})(nil)
+
+{{end}}

@@ -1,0 +1,135 @@
+{{define "decompose"}}
+    // template decompose: {{.Name}} ({{.Type}}->{{.Expr}})
+    {{- if .IsPrimitive}}
+    {{- else if .IsSlice}}
+        {{template "slice" .}}
+    {{- else if .IsSet}}
+        {{template "set" .}}
+    {{- else if .IsMap}}
+        {{template "map" .}}
+    {{- else if .IsPointer }}
+        {{template "pointer" .}}
+    {{- else if .IsTextMarshaler }}
+        {{template "textmarshaler" .}}
+    {{- else}}
+        {{template "nomsmarshaler" .}}
+    {{- end}}
+{{end}}
+{{define "decompose_value"}}
+    {{- if .IsPrimitive}}
+        {{- .MarshalPrimitive .Name}}
+    {{- else if .IsSlice}}
+        {{- template "slice_value" .}}
+    {{- else if .IsSet}}
+        {{- template "set_value" .}}
+    {{- else if .IsMap}}
+        {{template "map_value" .}}
+    {{- else if .IsPointer }}
+        {{- template "pointer_value" .}}
+    {{- else if .IsTextMarshaler }}
+        {{- template "textmarshaler_value" .}}
+    {{- else}}
+        {{- template "nomsmarshaler_value" .}}
+    {{- end -}}
+{{end}}
+
+
+{{define "map" -}}
+    // template map: {{.Name}}
+    {{.MakeLocal}}KVs := make([]nt.Value, 0, len({{.Name}})*2)
+    for {{.MakeLocal}}Key, {{.MakeLocal}}Value := range {{.Name}} {
+        {{template "decompose" (.MakeLocal | printf "%sValue" | .Inner)}}
+        {{.MakeLocal}}KVs = append(
+            {{.MakeLocal}}KVs,
+            nt.String({{.MakeLocal}}Key),
+            {{template "decompose_value" (.MakeLocal | printf "%sValue" | .Inner)}},
+        )
+    }
+{{- end}}
+{{define "map_value"}}nt.NewMap(vrw, {{.MakeLocal}}KVs...){{end}}
+{{define "nomsmarshaler" -}}
+    // template nomsmarshaler: {{.Name}}
+    {{.MakeLocal}}Value, err := {{.Name}}.MarshalNoms(vrw)
+    if err != nil {
+        return nil, errors.Wrap(err, "{{.Context.Type}}.MarshalNoms->{{.BareName}}.MarshalNoms")
+    }
+{{- end}}
+{{define "nomsmarshaler_value"}}{{.MakeLocal}}Value{{end}}
+{{define "pointer" -}}
+    // template pointer:  {{.Name}}
+    var {{.MakeLocal}}Unptr nt.Value
+    if {{.Name}} == nil {
+        {{.MakeLocal}}Unptr = {{(.Inner .Name).MarshalZero}}
+    } else {
+        {{template "decompose" (.Name | Deref | .Inner)}}
+        {{.MakeLocal}}Unptr = {{template "decompose_value" (.Name | Deref | .Inner)}}
+    }
+{{- end}}
+{{define "pointer_value"}}{{.MakeLocal}}Unptr{{end}}
+{{define "set" -}}
+    // template set:  {{.Name}}
+    {{.MakeLocal}}Items := make([]nt.Value, 0, len({{.Name}}))
+    for {{.MakeLocal}}Item := range {{.Name}} {
+        {{.MakeLocal}}Items = append(
+            {{.MakeLocal}}Items,
+            nt.String({{.MakeLocal}}Item),
+        )
+    }
+{{- end}}
+{{define "set_value"}}nt.NewSet(vrw, {{.MakeLocal}}Items...){{end}}
+{{define "slice" -}}
+    // template slice: {{.Name}}
+    {{.MakeLocal}}Items := make([]nt.Value, 0, len({{.Name}}))
+    for _, {{.MakeLocal}}Item := range {{.Name}} {
+        {{template "decompose" (.MakeLocal | printf "%sItem" | .Inner)}}
+        {{.MakeLocal}}Items = append(
+            {{.MakeLocal}}Items,
+            {{template "decompose_value" (.MakeLocal | printf "%sItem" | .Inner)}},
+        )
+    }
+{{- end}}
+{{define "slice_value"}}nt.NewList(vrw, {{.MakeLocal}}Items...){{end}}
+{{define "textmarshaler" -}}
+    // template textmarshaler: {{.Name}}
+    {{.MakeLocal}}String, err := {{.Name}}.MarshalText()
+    if err != nil {
+        return nil, errors.Wrap(err, "{{.Context.Type}}.MarshalNoms->{{.BareName}}.MarshalText")
+    }
+{{- end}}
+{{define "textmarshaler_value"}}nt.String({{.MakeLocal}}String){{end}}
+
+{{define "marshal_noms"}}
+var {{.Type | LowerFirst}}StructTemplate nt.StructTemplate
+
+func init() {
+    {{.Type | LowerFirst}}StructTemplate = nt.MakeStructTemplate("{{.Type}}", []string{
+        {{range .SortedFields -}}
+            "{{.BareName}}",
+        {{end -}}
+    })
+}
+
+// MarshalNoms implements noms/go/marshal.Marshaler
+func (x {{.Type}}) MarshalNoms(vrw nt.ValueReadWriter) ({{.Type | LowerFirst}}Value nt.Value, err error) {
+    {{- range .Fields}}
+        // {{.Name}} ({{.Type}}->{{.Expr}}) is primitive: {{.IsPrimitive}}
+        {{if not .IsPrimitive}}
+            {{- template "decompose" .}}
+        {{- end}}
+    {{- end}}
+
+    return {{.Type | LowerFirst}}StructTemplate.NewStruct([]nt.Value{
+        {{range .SortedFields -}}
+            // {{.Name}} ({{.Type}})
+            {{if .IsPrimitive}}
+                {{.MarshalPrimitive (printf "%s" .Name)}}
+            {{- else -}}
+                {{- template "decompose_value" .}}
+            {{- end}},
+        {{end -}}
+    }), nil
+}
+
+var _ marshal.Marshaler = (*{{.Type}})(nil)
+
+{{end}}
