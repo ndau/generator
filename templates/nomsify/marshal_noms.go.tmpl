@@ -69,11 +69,19 @@
 {{define "set" -}}
     // template set:  {{.Name}}
     {{.MakeLocal}}Items := make([]nt.Value, 0, len({{.Name}}))
-    for {{.MakeLocal}}Item := range {{.Name}} {
-        {{.MakeLocal}}Items = append(
-            {{.MakeLocal}}Items,
-            nt.String({{.MakeLocal}}Item),
-        )
+    if len({{.Name}}) > 0 {
+        // We need to iterate the set in sorted order, so build []string and sort it first
+        {{.MakeLocal}}Sorted := make([]string, 0, len({{.Name}}))
+        for {{.MakeLocal}}Item := range {{.Name}} {
+            {{.MakeLocal}}Sorted = append({{.MakeLocal}}Sorted, {{.MakeLocal}}Item)
+        }
+        sort.Sort(sort.StringSlice({{.MakeLocal}}Sorted))
+        for _, {{.MakeLocal}}Item := range {{.MakeLocal}}Sorted {
+            {{.MakeLocal}}Items = append(
+                {{.MakeLocal}}Items,
+                nt.String({{.MakeLocal}}Item),
+            )
+        }
     }
 {{- end}}
 {{define "set_value"}}nt.NewSet(vrw, {{.MakeLocal}}Items...){{end}}
