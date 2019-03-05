@@ -76,7 +76,7 @@
             {{.MakeLocal}}Sorted = append({{.MakeLocal}}Sorted, {{.MakeLocal}}Item)
         }
         sort.Sort(sort.StringSlice({{.MakeLocal}}Sorted))
-        for {{.MakeLocal}}Item := range {{.MakeLocal}}Sorted {
+        for _, {{.MakeLocal}}Item := range {{.MakeLocal}}Sorted {
             {{.MakeLocal}}Items = append(
                 {{.MakeLocal}}Items,
                 nt.String({{.MakeLocal}}Item),
