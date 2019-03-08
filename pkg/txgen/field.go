@@ -219,7 +219,7 @@ func (f *Field) IsSlice() bool {
 
 // IsSignature is true if the field is a signature field
 func (f *Field) IsSignature() bool {
-	return strings.EqualFold(f.Name, "signature") || strings.EqualFold(f.Name, "signatures") || strings.EqualFold(f.Name, "child_signature")
+	return strings.EqualFold(f.Name, "signature") || strings.EqualFold(f.Name, "signatures")
 }
 
 // Comment returns useful comments about a field.

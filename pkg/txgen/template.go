@@ -22,7 +22,7 @@ func stripSignatures(s string) string {
 	}
 	n := make(map[string]interface{})
 	for k, v := range m {
-		if !strings.EqualFold(k, "signature") && !strings.EqualFold(k, "signatures") && !strings.EqualFold(k, "child_signature") {
+		if !strings.EqualFold(k, "signature") && !strings.EqualFold(k, "signatures") {
 			n[k] = v
 		}
 	}

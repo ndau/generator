@@ -2,247 +2,247 @@ import TxSignPrep from '../TxSignPrep'
 
 describe('Transfer object prepare tests', () => {
   it('should build an object for Transfer and convert to known b64', () => {
-    var transfertx = {"source":"ndad9djvunc3c2yg896dpdy94akxwvxaa9fqx6ddxgvxwjcb","destination":"ndajbt8ssqfwgrhmpwer7w7n7n8d7n27ecr8fuue5swkwvgm","qty":1550453263105981,"sequence":732340766579218,"signatures":["a4jadtca7gzdfrci3dq5pvkxujke43p4g5phfqshunkrk2tjw93c3tsxnrtupqp3dkiu53344uxm24ksm5w669dg9kq4hipe355frz2zd8zis2y4satzvzze"]}
+    var transfertx = {"source":"ndaaung6yhmjx49gik47hskh5pbf4fkwug5vynn4rx2da4zf","destination":"ndaqyrj65fh2tmxq8gzphk8k6rb28xeh2rwe3e2atqj59nqa","qty":1550453263105981,"sequence":732340766579218,"signatures":["a4jadtcasrugajwejui6tgw2s4auxe4rcmr9udii7e96n4chm78vzaiwcgn2a2x4dhqfeydd5hekswgrvycehb27c53sywxv56fjy57vkx2y8yeunumksnb3"]}
 
     var bb = new TxSignPrep().prepare(transfertx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
-      "bmRhamJ0OHNzcWZ3Z3JobXB3ZXI3dzduN244ZDduMjdlY3I4ZnV1ZTVzd2t3dmdtAAWCIQf8/70AApoPXz8aEm5kYWQ5ZGp2dW5jM2MyeWc4OTZkcGR5OTRha3h3dnhhYTlmcXg2ZGR4Z3Z4d2pjYg=="
+      "bmRhcXlyajY1ZmgydG14cThnenBoazhrNnJiMjh4ZWgycndlM2UyYXRxajU5bnFhAAWCIQf8/70AApoPXz8aEm5kYWF1bmc2eWhtang0OWdpazQ3aHNraDVwYmY0Zmt3dWc1dnlubjRyeDJkYTR6Zg=="
     )
   })
   it('should build an object for Transfer without signatures and convert to known b64', () => {
-    var transfertx = {"destination":"ndajbt8ssqfwgrhmpwer7w7n7n8d7n27ecr8fuue5swkwvgm","qty":1550453263105981,"sequence":732340766579218,"source":"ndad9djvunc3c2yg896dpdy94akxwvxaa9fqx6ddxgvxwjcb"}
+    var transfertx = {"destination":"ndaqyrj65fh2tmxq8gzphk8k6rb28xeh2rwe3e2atqj59nqa","qty":1550453263105981,"sequence":732340766579218,"source":"ndaaung6yhmjx49gik47hskh5pbf4fkwug5vynn4rx2da4zf"}
 
     var bb = new TxSignPrep().prepare(transfertx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
-      "bmRhamJ0OHNzcWZ3Z3JobXB3ZXI3dzduN244ZDduMjdlY3I4ZnV1ZTVzd2t3dmdtAAWCIQf8/70AApoPXz8aEm5kYWQ5ZGp2dW5jM2MyeWc4OTZkcGR5OTRha3h3dnhhYTlmcXg2ZGR4Z3Z4d2pjYg=="
+      "bmRhcXlyajY1ZmgydG14cThnenBoazhrNnJiMjh4ZWgycndlM2UyYXRxajU5bnFhAAWCIQf8/70AApoPXz8aEm5kYWF1bmc2eWhtang0OWdpazQ3aHNraDVwYmY0Zmt3dWc1dnlubjRyeDJkYTR6Zg=="
     )
   })
 })
 describe('ChangeValidation object prepare tests', () => {
   it('should build an object for ChangeValidation and convert to known b64', () => {
-    var changevalidationtx = {"target":"ndamxzx8xhmvysanq2ux5azdb875x2yyitntuhayhbzdkhct","new_keys":["npuba8jadtbbedcefn7eit8jn3kj3vdsmwgunaami8gandpbn38esbyy6btga8cgcrfu53xaq8du"],"validation_script":"cM8NlD2AHKFaCLk4","sequence":4589118442271941,"signatures":["a4jadtcazep6ra6pbuu55si6v6khsigt4d52ftws8jhk4xntpef9eycm4dbkkpmxs5qq6hvck4nkaeax8afm6eeb9p8kfy7d5qx2z3j9ma37rwf3xq3uifaa"]}
+    var changevalidationtx = {"target":"ndahkkp6g2z62jkuq68vbdt5kyajq44x99f6exbdshumvjai","new_keys":["npuba8jadtbbedz523pz3d8xensuz46zhbqvckve9svrbjei87g5gjepe8tyrihn92dy4urdagj9"],"validation_script":"cG/M/jMqpk15Nuzi","sequence":4589118442271941,"signatures":["a4jadtcarb2erjuxvzieaesxz8zcib7jaci233ws9xb45uq2t7sfabdhu99y9m8fxbwt2haj5d77qru2m6g8r6kjapsuq457x6gc72rq3pf3q2ppkrac865e"]}
 
     var bb = new TxSignPrep().prepare(changevalidationtx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
-      "bnB1YmE4amFkdGJiZWRjZWZuN2VpdDhqbjNrajN2ZHNtd2d1bmFhbWk4Z2FuZHBibjM4ZXNieXk2YnRnYThjZ2NyZnU1M3hhcThkdQAQTcdmlXTFbmRhbXh6eDh4aG12eXNhbnEydXg1YXpkYjg3NXgyeXlpdG50dWhheWhiemRraGN0Y004TmxEMkFIS0ZhQ0xrNA=="
+      "bnB1YmE4amFkdGJiZWR6NTIzcHozZDh4ZW5zdXo0NnpoYnF2Y2t2ZTlzdnJiamVpODdnNWdqZXBlOHR5cmlobjkyZHk0dXJkYWdqOQAQTcdmlXTFbmRhaGtrcDZnMno2MmprdXE2OHZiZHQ1a3lhanE0NHg5OWY2ZXhiZHNodW12amFpY0cvTS9qTXFwazE1TnV6aQ=="
     )
   })
   it('should build an object for ChangeValidation without signatures and convert to known b64', () => {
-    var changevalidationtx = {"new_keys":["npuba8jadtbbedcefn7eit8jn3kj3vdsmwgunaami8gandpbn38esbyy6btga8cgcrfu53xaq8du"],"sequence":4589118442271941,"target":"ndamxzx8xhmvysanq2ux5azdb875x2yyitntuhayhbzdkhct","validation_script":"cM8NlD2AHKFaCLk4"}
+    var changevalidationtx = {"new_keys":["npuba8jadtbbedz523pz3d8xensuz46zhbqvckve9svrbjei87g5gjepe8tyrihn92dy4urdagj9"],"sequence":4589118442271941,"target":"ndahkkp6g2z62jkuq68vbdt5kyajq44x99f6exbdshumvjai","validation_script":"cG/M/jMqpk15Nuzi"}
 
     var bb = new TxSignPrep().prepare(changevalidationtx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
-      "bnB1YmE4amFkdGJiZWRjZWZuN2VpdDhqbjNrajN2ZHNtd2d1bmFhbWk4Z2FuZHBibjM4ZXNieXk2YnRnYThjZ2NyZnU1M3hhcThkdQAQTcdmlXTFbmRhbXh6eDh4aG12eXNhbnEydXg1YXpkYjg3NXgyeXlpdG50dWhheWhiemRraGN0Y004TmxEMkFIS0ZhQ0xrNA=="
+      "bnB1YmE4amFkdGJiZWR6NTIzcHozZDh4ZW5zdXo0NnpoYnF2Y2t2ZTlzdnJiamVpODdnNWdqZXBlOHR5cmlobjkyZHk0dXJkYWdqOQAQTcdmlXTFbmRhaGtrcDZnMno2MmprdXE2OHZiZHQ1a3lhanE0NHg5OWY2ZXhiZHNodW12amFpY0cvTS9qTXFwazE1TnV6aQ=="
     )
   })
 })
 describe('ReleaseFromEndowment object prepare tests', () => {
   it('should build an object for ReleaseFromEndowment and convert to known b64', () => {
-    var releasefromendowmenttx = {"destination":"ndaemx6bvuvyayrf8nzqgay26v7vx8a4ifr6s9vefusttzm7","qty":1975528111046083,"sequence":7465139729523843,"signatures":["a4jadtcarjjthw9i3jdzx9pk29jnpu6smkbusnbeuxq4jqwjk96nebguuakdszxatduw4rnr8wbx6puh46cjxvrjsa5h9b452mjtxmdqmw2bhpamgr2ptbqj"]}
+    var releasefromendowmenttx = {"destination":"ndaqu6dgqh6fxignhne9ru9kj9nb94j2khewn7fjwzp8q499","qty":1975528111046083,"sequence":7465139729523843,"signatures":["a4jadtcatiyv4r6astpqipj8faqfz2uj43indj7njqz4q6meznryj5ts8wkpq7p653bupu9kwk8i2eamqtty4385rwapujvbxyvwcabz7ucud3nspz9bprax"]}
 
     var bb = new TxSignPrep().prepare(releasefromendowmenttx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
-      "bmRhZW14NmJ2dXZ5YXlyZjhuenFnYXkyNnY3dng4YTRpZnI2czl2ZWZ1c3R0em03AAcEu3tNfcMAGoWBScbkgw=="
+      "bmRhcXU2ZGdxaDZmeGlnbmhuZTlydTlrajluYjk0ajJraGV3bjdmand6cDhxNDk5AAcEu3tNfcMAGoWBScbkgw=="
     )
   })
   it('should build an object for ReleaseFromEndowment without signatures and convert to known b64', () => {
-    var releasefromendowmenttx = {"destination":"ndaemx6bvuvyayrf8nzqgay26v7vx8a4ifr6s9vefusttzm7","qty":1975528111046083,"sequence":7465139729523843}
+    var releasefromendowmenttx = {"destination":"ndaqu6dgqh6fxignhne9ru9kj9nb94j2khewn7fjwzp8q499","qty":1975528111046083,"sequence":7465139729523843}
 
     var bb = new TxSignPrep().prepare(releasefromendowmenttx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
-      "bmRhZW14NmJ2dXZ5YXlyZjhuenFnYXkyNnY3dng4YTRpZnI2czl2ZWZ1c3R0em03AAcEu3tNfcMAGoWBScbkgw=="
+      "bmRhcXU2ZGdxaDZmeGlnbmhuZTlydTlrajluYjk0ajJraGV3bjdmand6cDhxNDk5AAcEu3tNfcMAGoWBScbkgw=="
     )
   })
 })
 describe('ChangeSettlementPeriod object prepare tests', () => {
   it('should build an object for ChangeSettlementPeriod and convert to known b64', () => {
-    var changesettlementperiodtx = {"target":"ndanav55xasmnzyq39jdkisfd5hwxusut2dxamk9yxfarwes","period":"11m25dt14h35m49s167320us","sequence":1912297565323361,"signatures":["a4jadtca2q44zg2j3d2nze4gzp72uwr6prjrfmii5mstfzgqiur33w48kgtmrzqrd5kbvsuzm6vxphsfedt7rceemr7ceg8qd9yumzvx3gaws2v3q5tezser"]}
+    var changesettlementperiodtx = {"target":"ndar2zj7hu6mx3bzzq4z2h2j3vv5srgzvb5u4zsqpqjdhp75","period":"11m25dt14h35m49s167320us","sequence":1912297565323361,"signatures":["a4jadtca9sx3js8jfxje2ww8eqjq4zr2bz443ur7g6jdvnhx83ge6tksq58iw5z3a22826x4kydrjj2atd8ehage7pad39ck38xu98hjxnwzxbn4ytvsvnmc"]}
 
     var bb = new TxSignPrep().prepare(changesettlementperiodtx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
-      "MTFtMjVkdDE0aDM1bTQ5czE2NzMyMHVzAAbLOXkWAGFuZGFuYXY1NXhhc21uenlxMzlqZGtpc2ZkNWh3eHVzdXQyZHhhbWs5eXhmYXJ3ZXM="
+      "MTFtMjVkdDE0aDM1bTQ5czE2NzMyMHVzAAbLOXkWAGFuZGFyMnpqN2h1Nm14M2J6enE0ejJoMmozdnY1c3JnenZiNXU0enNxcHFqZGhwNzU="
     )
   })
   it('should build an object for ChangeSettlementPeriod without signatures and convert to known b64', () => {
-    var changesettlementperiodtx = {"period":"11m25dt14h35m49s167320us","sequence":1912297565323361,"target":"ndanav55xasmnzyq39jdkisfd5hwxusut2dxamk9yxfarwes"}
+    var changesettlementperiodtx = {"period":"11m25dt14h35m49s167320us","sequence":1912297565323361,"target":"ndar2zj7hu6mx3bzzq4z2h2j3vv5srgzvb5u4zsqpqjdhp75"}
 
     var bb = new TxSignPrep().prepare(changesettlementperiodtx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
-      "MTFtMjVkdDE0aDM1bTQ5czE2NzMyMHVzAAbLOXkWAGFuZGFuYXY1NXhhc21uenlxMzlqZGtpc2ZkNWh3eHVzdXQyZHhhbWs5eXhmYXJ3ZXM="
+      "MTFtMjVkdDE0aDM1bTQ5czE2NzMyMHVzAAbLOXkWAGFuZGFyMnpqN2h1Nm14M2J6enE0ejJoMmozdnY1c3JnenZiNXU0enNxcHFqZGhwNzU="
     )
   })
 })
 describe('Delegate object prepare tests', () => {
   it('should build an object for Delegate and convert to known b64', () => {
-    var delegatetx = {"target":"ndar77g6n2x4p5gjk28gv9778vac5adi8f37tw8ty6uewv7t","node":"ndadiv9taenxgma4x6x3m6aryjagkxuum2kxcsqcmeep23qe","sequence":2483436573217588,"signatures":["a4jadtca65q4mtjbs9azdxzwdwk6m927gv7b3t4crjdf7892tmbba2n29ekjaa9fw4qmk6vrfcw2nz3aq4wprmp5e3nxg6kviiifiin2ewc38zg57zxugjh7"]}
+    var delegatetx = {"target":"ndam2j5k6q5ejn5jbstj39ugiv4mwh762eqrch62vftspamy","node":"ndapm58qzzyg5zcuix529c5m79am4hvdi88pfggjnggvaymk","sequence":2483436573217588,"signatures":["a4jadtcaz39rvbf9gwkhwhuv78sgh5ax8etb4xif9w6mpd2xq7bur6qbqu7phfmasiqfgj3e6v9q6s2cis5vya2nmbpg2f5637h9e77sy5sdyc322jf36xd5"]}
 
     var bb = new TxSignPrep().prepare(delegatetx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
-      "bmRhZGl2OXRhZW54Z21hNHg2eDNtNmFyeWphZ2t4dXVtMmt4Y3NxY21lZXAyM3FlAAjSrCLE0zRuZGFyNzdnNm4yeDRwNWdqazI4Z3Y5Nzc4dmFjNWFkaThmMzd0dzh0eTZ1ZXd2N3Q="
+      "bmRhcG01OHF6enlnNXpjdWl4NTI5YzVtNzlhbTRodmRpODhwZmdnam5nZ3ZheW1rAAjSrCLE0zRuZGFtMmo1azZxNWVqbjVqYnN0ajM5dWdpdjRtd2g3NjJlcXJjaDYydmZ0c3BhbXk="
     )
   })
   it('should build an object for Delegate without signatures and convert to known b64', () => {
-    var delegatetx = {"node":"ndadiv9taenxgma4x6x3m6aryjagkxuum2kxcsqcmeep23qe","sequence":2483436573217588,"target":"ndar77g6n2x4p5gjk28gv9778vac5adi8f37tw8ty6uewv7t"}
+    var delegatetx = {"node":"ndapm58qzzyg5zcuix529c5m79am4hvdi88pfggjnggvaymk","sequence":2483436573217588,"target":"ndam2j5k6q5ejn5jbstj39ugiv4mwh762eqrch62vftspamy"}
 
     var bb = new TxSignPrep().prepare(delegatetx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
-      "bmRhZGl2OXRhZW54Z21hNHg2eDNtNmFyeWphZ2t4dXVtMmt4Y3NxY21lZXAyM3FlAAjSrCLE0zRuZGFyNzdnNm4yeDRwNWdqazI4Z3Y5Nzc4dmFjNWFkaThmMzd0dzh0eTZ1ZXd2N3Q="
+      "bmRhcG01OHF6enlnNXpjdWl4NTI5YzVtNzlhbTRodmRpODhwZmdnam5nZ3ZheW1rAAjSrCLE0zRuZGFtMmo1azZxNWVqbjVqYnN0ajM5dWdpdjRtd2g3NjJlcXJjaDYydmZ0c3BhbXk="
     )
   })
 })
 describe('CreditEAI object prepare tests', () => {
   it('should build an object for CreditEAI and convert to known b64', () => {
-    var crediteaitx = {"node":"ndaj8rz4ij9hf9zmz5p2vbsduxkeu4jwfi59akxtainu6bpa","sequence":2673222963759107,"signatures":["a4jadtcak77ttxf8ake9q23q9jzfruahtdppmn4h6aeeaab6hyemh5qcn8vunvjhnni49h3mghtxm7ay5tum6jc6s9pp4p7gygd9p77d3fz8tg7wasycpbt2"]}
+    var crediteaitx = {"node":"ndak8hm4z9ddufgqukz3yxz8c9hedirieya6t6t49jszegqx","sequence":2673222963759107,"signatures":["a4jadtcaqimycbeb6fcz4w3gwnke8vd2cjpq99q796tv8kjnbm3sxfhr8qdi8uyuakawh9bqimnvwhyji9f29x97a88hqvkebqxmaahdpaqzeizdh39jjz3a"]}
 
     var bb = new TxSignPrep().prepare(crediteaitx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
-      "bmRhajhyejRpajloZjl6bXo1cDJ2YnNkdXhrZXU0andmaTU5YWt4dGFpbnU2YnBhAAl/SDkpCAM="
+      "bmRhazhobTR6OWRkdWZncXVrejN5eHo4YzloZWRpcmlleWE2dDZ0NDlqc3plZ3F4AAl/SDkpCAM="
     )
   })
   it('should build an object for CreditEAI without signatures and convert to known b64', () => {
-    var crediteaitx = {"node":"ndaj8rz4ij9hf9zmz5p2vbsduxkeu4jwfi59akxtainu6bpa","sequence":2673222963759107}
+    var crediteaitx = {"node":"ndak8hm4z9ddufgqukz3yxz8c9hedirieya6t6t49jszegqx","sequence":2673222963759107}
 
     var bb = new TxSignPrep().prepare(crediteaitx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
-      "bmRhajhyejRpajloZjl6bXo1cDJ2YnNkdXhrZXU0andmaTU5YWt4dGFpbnU2YnBhAAl/SDkpCAM="
+      "bmRhazhobTR6OWRkdWZncXVrejN5eHo4YzloZWRpcmlleWE2dDZ0NDlqc3plZ3F4AAl/SDkpCAM="
     )
   })
 })
 describe('Lock object prepare tests', () => {
   it('should build an object for Lock and convert to known b64', () => {
-    var locktx = {"target":"ndaehaewpj5npi4z7bua528a8hvx4dn544hudqx3ffgwhhrf","period":"3y20dt6h48m279449us","sequence":5203743511895827,"signatures":["a4jadtcaq2k62cscxhuy9gsydvmu5zt6ibt3hfiabw4zybvgq2piy9pdh82dn2n3g5atje37a2sjtshpy848vhgmdz3sn94tc5rnp2j3dcwgduqpzb2uwh3j"]}
+    var locktx = {"target":"ndahkmxu9pvwa52bc8tuihy3zyu5gdf2krg8jeuczmajdeu4","period":"3y20dt6h48m279449us","sequence":5203743511895827,"signatures":["a4jadtcahcn3n96b9zzwgjikabvy549xa6j3iyc6cs44qvp978x6qxb6ympktsnkewgx6n339gm2ud562kq74qx3zr824vd8ht52ncbjau73kpva7mfeqtsy"]}
 
     var bb = new TxSignPrep().prepare(locktx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
-      "M3kyMGR0Nmg0OG0yNzk0NDl1cwASfMbzh18TbmRhZWhhZXdwajVucGk0ejdidWE1MjhhOGh2eDRkbjU0NGh1ZHF4M2ZmZ3doaHJm"
+      "M3kyMGR0Nmg0OG0yNzk0NDl1cwASfMbzh18TbmRhaGtteHU5cHZ3YTUyYmM4dHVpaHkzenl1NWdkZjJrcmc4amV1Y3ptYWpkZXU0"
     )
   })
   it('should build an object for Lock without signatures and convert to known b64', () => {
-    var locktx = {"period":"3y20dt6h48m279449us","sequence":5203743511895827,"target":"ndaehaewpj5npi4z7bua528a8hvx4dn544hudqx3ffgwhhrf"}
+    var locktx = {"period":"3y20dt6h48m279449us","sequence":5203743511895827,"target":"ndahkmxu9pvwa52bc8tuihy3zyu5gdf2krg8jeuczmajdeu4"}
 
     var bb = new TxSignPrep().prepare(locktx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
-      "M3kyMGR0Nmg0OG0yNzk0NDl1cwASfMbzh18TbmRhZWhhZXdwajVucGk0ejdidWE1MjhhOGh2eDRkbjU0NGh1ZHF4M2ZmZ3doaHJm"
+      "M3kyMGR0Nmg0OG0yNzk0NDl1cwASfMbzh18TbmRhaGtteHU5cHZ3YTUyYmM4dHVpaHkzenl1NWdkZjJrcmc4amV1Y3ptYWpkZXU0"
     )
   })
 })
 describe('Notify object prepare tests', () => {
   it('should build an object for Notify and convert to known b64', () => {
-    var notifytx = {"target":"ndak7f9d5pa69mxjcjmfwfza8q33bmefxqvzhyjzi7xgfd2s","sequence":1507085064423784,"signatures":["a4jadtcaa9rvn7nfaf95q74xyuq25uicgawz693d8ksp8pja9bfrjwa3hia3fdvaj7hjyrkves2ssaf2em255mrq83yaxqbfk8ppcg457ive6fji9knn8iy4"]}
+    var notifytx = {"target":"ndapdpbsx5rykws2549c2hsq82k4w2vetgn7imvvcn9btrd3","sequence":1507085064423784,"signatures":["a4jadtcapqsq624wcbghxkm3ngh8r532kdgum92eejtw3evwi74p8itpv4t6cp4wsaece9acs7zqcftq29qr9f84d22f4yvi46j7upzij466vesa9vmuqqvg"]}
 
     var bb = new TxSignPrep().prepare(notifytx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
-      "AAVar5XpSWhuZGFrN2Y5ZDVwYTY5bXhqY2ptZndmemE4cTMzYm1lZnhxdnpoeWp6aTd4Z2ZkMnM="
+      "AAVar5XpSWhuZGFwZHBic3g1cnlrd3MyNTQ5YzJoc3E4Mms0dzJ2ZXRnbjdpbXZ2Y245YnRyZDM="
     )
   })
   it('should build an object for Notify without signatures and convert to known b64', () => {
-    var notifytx = {"sequence":1507085064423784,"target":"ndak7f9d5pa69mxjcjmfwfza8q33bmefxqvzhyjzi7xgfd2s"}
+    var notifytx = {"sequence":1507085064423784,"target":"ndapdpbsx5rykws2549c2hsq82k4w2vetgn7imvvcn9btrd3"}
 
     var bb = new TxSignPrep().prepare(notifytx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
-      "AAVar5XpSWhuZGFrN2Y5ZDVwYTY5bXhqY2ptZndmemE4cTMzYm1lZnhxdnpoeWp6aTd4Z2ZkMnM="
+      "AAVar5XpSWhuZGFwZHBic3g1cnlrd3MyNTQ5YzJoc3E4Mms0dzJ2ZXRnbjdpbXZ2Y245YnRyZDM="
     )
   })
 })
 describe('SetRewardsDestination object prepare tests', () => {
   it('should build an object for SetRewardsDestination and convert to known b64', () => {
-    var setrewardsdestinationtx = {"target":"ndaemvamvjcuih46yxnan7syvxu8a7b8wisemr2wmhavtrju","destination":"ndagsqak4fwh8gtnnhw4f2c9cccc8npwq2arhak7wq47pq8p","sequence":3658774096214545,"signatures":["a4jadtcapipinmbqqbgv9y957ydypc8qbrv97pzf6dfj8fc856et93csyf2zj49vuq68ewcrjtujq92gwjtgc22wyhhzq65xdjyqrsdstfdtvmhx8ee5v489"]}
+    var setrewardsdestinationtx = {"target":"ndact5k6hacxdmygy45fd2btqcgsx8f8tkwy9biz9faiqvpi","destination":"ndad8mj82n83xp44eqxcccuace3aw7g8hkgm285kp5vrhdcs","sequence":3658774096214545,"signatures":["a4jadtcaa6zq6ttvvg3vmtqm89mkk8bci9kgzemcc8a3jijkvag8tpn5y9y8zx9w7yfa3p7yhxfvpndsfhbphiptacusm5gp9qndnnxv79g5kmtzip8fvfit"]}
 
     var bb = new TxSignPrep().prepare(setrewardsdestinationtx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
-      "bmRhZ3NxYWs0ZndoOGd0bm5odzRmMmM5Y2NjYzhucHdxMmFyaGFrN3dxNDdwcThwAAz/orpRehFuZGFlbXZhbXZqY3VpaDQ2eXhuYW43c3l2eHU4YTdiOHdpc2VtcjJ3bWhhdnRyanU="
+      "bmRhZDhtajgybjgzeHA0NGVxeGNjY3VhY2UzYXc3Zzhoa2dtMjg1a3A1dnJoZGNzAAz/orpRehFuZGFjdDVrNmhhY3hkbXlneTQ1ZmQyYnRxY2dzeDhmOHRrd3k5Yml6OWZhaXF2cGk="
     )
   })
   it('should build an object for SetRewardsDestination without signatures and convert to known b64', () => {
-    var setrewardsdestinationtx = {"destination":"ndagsqak4fwh8gtnnhw4f2c9cccc8npwq2arhak7wq47pq8p","sequence":3658774096214545,"target":"ndaemvamvjcuih46yxnan7syvxu8a7b8wisemr2wmhavtrju"}
+    var setrewardsdestinationtx = {"destination":"ndad8mj82n83xp44eqxcccuace3aw7g8hkgm285kp5vrhdcs","sequence":3658774096214545,"target":"ndact5k6hacxdmygy45fd2btqcgsx8f8tkwy9biz9faiqvpi"}
 
     var bb = new TxSignPrep().prepare(setrewardsdestinationtx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
-      "bmRhZ3NxYWs0ZndoOGd0bm5odzRmMmM5Y2NjYzhucHdxMmFyaGFrN3dxNDdwcThwAAz/orpRehFuZGFlbXZhbXZqY3VpaDQ2eXhuYW43c3l2eHU4YTdiOHdpc2VtcjJ3bWhhdnRyanU="
+      "bmRhZDhtajgybjgzeHA0NGVxeGNjY3VhY2UzYXc3Zzhoa2dtMjg1a3A1dnJoZGNzAAz/orpRehFuZGFjdDVrNmhhY3hkbXlneTQ1ZmQyYnRxY2dzeDhmOHRrd3k5Yml6OWZhaXF2cGk="
     )
   })
 })
 describe('ClaimAccount object prepare tests', () => {
   it('should build an object for ClaimAccount and convert to known b64', () => {
-    var claimaccounttx = {"target":"ndafngq542uzbv8d6ggbk2yhwiwtksaixv33vecrzezkf86t","ownership":"npuba8jadtbbedqj4vefr4k7qcpcqwesca42smgreb6fbmarc6e9th9jw8vi9xcsjgt9actkp4f3","validation_keys":["npuba8jadtbbedm94x6erdnqu8gz2wvv3f6cend84jkm7dz9ztrirpm9572zxugec39z68nfdh8v"],"validation_script":"29p493G2pgi6RwWW","sequence":7142365320213337,"signature":"a4jadtcaabmddt6vvysehr4ru2sn6f7yf4ba7i6xkj52btgi6d43xvzaszuad5dhh6e88qd5zun6bvgytynm4kfz8pcursq3yc52mmhjc5y74trupsf5ra5t"}
+    var claimaccounttx = {"target":"ndak268taj58grn46x4fyfjuurj23yefdtfikreu32phvpx9","ownership":"npuba8jadtbbecbgkaeu4pczj7i63szf8x6qjit88gnf4b7vn2k44wcwk3bz3qx4nzcardq6tndj","validation_keys":["npuba8jadtbbedz5227xxrxgvyx74jmqxy47b84yayfqzect7v3vi2927tt3ewn49w6jszbaa2cs"],"validation_script":"rCPzobpb29QDHvWP","sequence":7142365320213337,"signature":"a4jadtcagbtvtj8d2baqn6zxts47yqxbgzd257zrpxsuywt5spn5n6tce34q6iyfz3n96s66zuntuddgnvzbj5usts6dqx3rsqt2icy8gmbab384mwiq4xyi"}
 
     var bb = new TxSignPrep().prepare(claimaccounttx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
-      "bnB1YmE4amFkdGJiZWRxajR2ZWZyNGs3cWNwY3F3ZXNjYTQyc21ncmViNmZibWFyYzZlOXRoOWp3OHZpOXhjc2pndDlhY3RrcDRmMwAZX/GDxHNZbmRhZm5ncTU0MnV6YnY4ZDZnZ2JrMnlod2l3dGtzYWl4djMzdmVjcnplemtmODZ0bnB1YmE4amFkdGJiZWRtOTR4NmVyZG5xdThnejJ3dnYzZjZjZW5kODRqa203ZHo5enRyaXJwbTk1NzJ6eHVnZWMzOXo2OG5mZGg4djI5cDQ5M0cycGdpNlJ3V1c="
+      "bnB1YmE4amFkdGJiZWNiZ2thZXU0cGN6ajdpNjNzemY4eDZxaml0ODhnbmY0Yjd2bjJrNDR3Y3drM2J6M3F4NG56Y2FyZHE2dG5kagAZX/GDxHNZbmRhazI2OHRhajU4Z3JuNDZ4NGZ5Zmp1dXJqMjN5ZWZkdGZpa3JldTMycGh2cHg5bnB1YmE4amFkdGJiZWR6NTIyN3h4cnhndnl4NzRqbXF4eTQ3Yjg0eWF5ZnF6ZWN0N3YzdmkyOTI3dHQzZXduNDl3NmpzemJhYTJjc3JDUHpvYnBiMjlRREh2V1A="
     )
   })
   it('should build an object for ClaimAccount without signatures and convert to known b64', () => {
-    var claimaccounttx = {"ownership":"npuba8jadtbbedqj4vefr4k7qcpcqwesca42smgreb6fbmarc6e9th9jw8vi9xcsjgt9actkp4f3","sequence":7142365320213337,"target":"ndafngq542uzbv8d6ggbk2yhwiwtksaixv33vecrzezkf86t","validation_keys":["npuba8jadtbbedm94x6erdnqu8gz2wvv3f6cend84jkm7dz9ztrirpm9572zxugec39z68nfdh8v"],"validation_script":"29p493G2pgi6RwWW"}
+    var claimaccounttx = {"ownership":"npuba8jadtbbecbgkaeu4pczj7i63szf8x6qjit88gnf4b7vn2k44wcwk3bz3qx4nzcardq6tndj","sequence":7142365320213337,"target":"ndak268taj58grn46x4fyfjuurj23yefdtfikreu32phvpx9","validation_keys":["npuba8jadtbbedz5227xxrxgvyx74jmqxy47b84yayfqzect7v3vi2927tt3ewn49w6jszbaa2cs"],"validation_script":"rCPzobpb29QDHvWP"}
 
     var bb = new TxSignPrep().prepare(claimaccounttx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
-      "bnB1YmE4amFkdGJiZWRxajR2ZWZyNGs3cWNwY3F3ZXNjYTQyc21ncmViNmZibWFyYzZlOXRoOWp3OHZpOXhjc2pndDlhY3RrcDRmMwAZX/GDxHNZbmRhZm5ncTU0MnV6YnY4ZDZnZ2JrMnlod2l3dGtzYWl4djMzdmVjcnplemtmODZ0bnB1YmE4amFkdGJiZWRtOTR4NmVyZG5xdThnejJ3dnYzZjZjZW5kODRqa203ZHo5enRyaXJwbTk1NzJ6eHVnZWMzOXo2OG5mZGg4djI5cDQ5M0cycGdpNlJ3V1c="
+      "bnB1YmE4amFkdGJiZWNiZ2thZXU0cGN6ajdpNjNzemY4eDZxaml0ODhnbmY0Yjd2bjJrNDR3Y3drM2J6M3F4NG56Y2FyZHE2dG5kagAZX/GDxHNZbmRhazI2OHRhajU4Z3JuNDZ4NGZ5Zmp1dXJqMjN5ZWZkdGZpa3JldTMycGh2cHg5bnB1YmE4amFkdGJiZWR6NTIyN3h4cnhndnl4NzRqbXF4eTQ3Yjg0eWF5ZnF6ZWN0N3YzdmkyOTI3dHQzZXduNDl3NmpzemJhYTJjc3JDUHpvYnBiMjlRREh2V1A="
     )
   })
 })
 describe('Stake object prepare tests', () => {
   it('should build an object for Stake and convert to known b64', () => {
-    var staketx = {"target":"ndaajqppqe4kecbty5k6rm8yr4gaj755i558pb8uispd68gh","staked_account":"ndam3ueqw2p775g2rweyhbvqbagrt8wgkh87prvkvqvczixx","sequence":6229113420623440,"signatures":["a4jadtcaae8rwsmwe2z62d7dnhwg4h6pmzsg2dygf69isahtggutgce7ms4tb5majducwfa2bh68bf2rd7frwbq55z7tjbshedgyxkv2qnk6uayv9ggy3xf3"]}
+    var staketx = {"target":"ndam4mbi7ei7cdq49a79r9jfvj3v4thh4n8wbkedzhijdjcy","staked_account":"ndajaut3uj36wddtfk6xmbiihgjwkaxh5aejuqiu6dw4n73d","sequence":6229113420623440,"signatures":["a4jadtcap2wv599dhxq4pv6dynjh94c3hk9z3qwjuzm8vb5ycezn52w6ji2dfqz6xedzw2qpbc4bshurey6sy6be34mtc34s95g83c86w5mqi4syfae7qk7x"]}
 
     var bb = new TxSignPrep().prepare(staketx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
-      "ABYhWHyzrlBuZGFtM3VlcXcycDc3NWcycndleWhidnFiYWdydDh3Z2toODdwcnZrdnF2Y3ppeHhuZGFhanFwcHFlNGtlY2J0eTVrNnJtOHlyNGdhajc1NWk1NThwYjh1aXNwZDY4Z2g="
+      "ABYhWHyzrlBuZGFqYXV0M3VqMzZ3ZGR0Zms2eG1iaWloZ2p3a2F4aDVhZWp1cWl1NmR3NG43M2RuZGFtNG1iaTdlaTdjZHE0OWE3OXI5amZ2ajN2NHRoaDRuOHdia2VkemhpamRqY3k="
     )
   })
   it('should build an object for Stake without signatures and convert to known b64', () => {
-    var staketx = {"sequence":6229113420623440,"staked_account":"ndam3ueqw2p775g2rweyhbvqbagrt8wgkh87prvkvqvczixx","target":"ndaajqppqe4kecbty5k6rm8yr4gaj755i558pb8uispd68gh"}
+    var staketx = {"sequence":6229113420623440,"staked_account":"ndajaut3uj36wddtfk6xmbiihgjwkaxh5aejuqiu6dw4n73d","target":"ndam4mbi7ei7cdq49a79r9jfvj3v4thh4n8wbkedzhijdjcy"}
 
     var bb = new TxSignPrep().prepare(staketx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
-      "ABYhWHyzrlBuZGFtM3VlcXcycDc3NWcycndleWhidnFiYWdydDh3Z2toODdwcnZrdnF2Y3ppeHhuZGFhanFwcHFlNGtlY2J0eTVrNnJtOHlyNGdhajc1NWk1NThwYjh1aXNwZDY4Z2g="
+      "ABYhWHyzrlBuZGFqYXV0M3VqMzZ3ZGR0Zms2eG1iaWloZ2p3a2F4aDVhZWp1cWl1NmR3NG43M2RuZGFtNG1iaTdlaTdjZHE0OWE3OXI5amZ2ajN2NHRoaDRuOHdia2VkemhpamRqY3k="
     )
   })
 })
 describe('RegisterNode object prepare tests', () => {
   it('should build an object for RegisterNode and convert to known b64', () => {
-    var registernodetx = {"node":"ndad286hpnpc5zxd27rkvtw68euef7f7t3m6t6picntcpzha","distribution_script":"C99xituz21RxPH97","rpc_address":"string: thct uax xkqf afplsj bcxoeffr ","sequence":5633755682856050,"signatures":["a4jadtca98qr4xu5hkyvax2wu2jeuk3mshdjudvnkn84dae72zrzhwh5jighmarjizc3rb3t3b477sb5d4r8ebeqm228c2f8pr7ajfh3r7ezi75baasvnu6v"]}
+    var registernodetx = {"node":"ndanrx9h3tg2jd7p9k3k7rv4iqdg4ivu3s6piqja5ujzg2h4","distribution_script":"VY7LAkGVTUUKjn44","rpc_address":"string: thct uax xkqf afplsj bcxoeffr ","sequence":5633755682856050,"signatures":["a4jadtcafducvg3rgbt9ihyfiz3nrwzyf9su77d74yqtpzw67mtadga9je9svf688vau9aigx7km32ghwpvq2ycrutqymhess6p9fm6mxx7uagvr2tg9k35j"]}
 
     var bb = new TxSignPrep().prepare(registernodetx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
-      "Qzk5eGl0dXoyMVJ4UEg5N25kYWQyODZocG5wYzV6eGQyN3JrdnR3NjhldWVmN2Y3dDNtNnQ2cGljbnRjcHpoYXN0cmluZzogdGhjdCB1YXggeGtxZiBhZnBsc2ogYmN4b2VmZnIgABQD3vY6XHI="
+      "Vlk3TEFrR1ZUVVVLam40NG5kYW5yeDloM3RnMmpkN3A5azNrN3J2NGlxZGc0aXZ1M3M2cGlxamE1dWp6ZzJoNHN0cmluZzogdGhjdCB1YXggeGtxZiBhZnBsc2ogYmN4b2VmZnIgABQD3vY6XHI="
     )
   })
   it('should build an object for RegisterNode without signatures and convert to known b64', () => {
-    var registernodetx = {"distribution_script":"C99xituz21RxPH97","node":"ndad286hpnpc5zxd27rkvtw68euef7f7t3m6t6picntcpzha","rpc_address":"string: thct uax xkqf afplsj bcxoeffr ","sequence":5633755682856050}
+    var registernodetx = {"distribution_script":"VY7LAkGVTUUKjn44","node":"ndanrx9h3tg2jd7p9k3k7rv4iqdg4ivu3s6piqja5ujzg2h4","rpc_address":"string: thct uax xkqf afplsj bcxoeffr ","sequence":5633755682856050}
 
     var bb = new TxSignPrep().prepare(registernodetx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
-      "Qzk5eGl0dXoyMVJ4UEg5N25kYWQyODZocG5wYzV6eGQyN3JrdnR3NjhldWVmN2Y3dDNtNnQ2cGljbnRjcHpoYXN0cmluZzogdGhjdCB1YXggeGtxZiBhZnBsc2ogYmN4b2VmZnIgABQD3vY6XHI="
+      "Vlk3TEFrR1ZUVVVLam40NG5kYW5yeDloM3RnMmpkN3A5azNrN3J2NGlxZGc0aXZ1M3M2cGlxamE1dWp6ZzJoNHN0cmluZzogdGhjdCB1YXggeGtxZiBhZnBsc2ogYmN4b2VmZnIgABQD3vY6XHI="
     )
   })
 })
 describe('NominateNodeReward object prepare tests', () => {
   it('should build an object for NominateNodeReward and convert to known b64', () => {
-    var nominatenoderewardtx = {"random":7664575722253654,"sequence":4786722739683373,"signatures":["a4jadtcarp3vibrnyix4h4aet6ezkkt4di6mb886v4jwmj5d5eypbpx8dwcgnncc7angjyzfi7h4eikdestvig7spsmhdnammteu7uqrna9vspnfwif9r24k"]}
+    var nominatenoderewardtx = {"random":7664575722253654,"sequence":4786722739683373,"signatures":["a4jadtcaztsztfwebfux9mdn323dycr5f5r2pix96ajraba3np8cvuzcurufqh7njny73sxxej3pnd2sgny4axwgvgb4rp9ysj5mkh7dsbqey7p3wpqxf8f5"]}
 
     var bb = new TxSignPrep().prepare(nominatenoderewardtx)
     var b64 = bb.b64encode()
@@ -262,127 +262,127 @@ describe('NominateNodeReward object prepare tests', () => {
 })
 describe('ClaimNodeReward object prepare tests', () => {
   it('should build an object for ClaimNodeReward and convert to known b64', () => {
-    var claimnoderewardtx = {"node":"ndanb4bnzvbvz7kxxit5c4p3vzdf5p64g6r3y3zqqverds8r","sequence":4402827188794727,"signatures":["a4jadtcaswqk9sjmafaq7tbkhrrzycthsxgnksm8826qpcnu3pi2r2b5es3cr3t6nus75fywxmk6cfswx6tqiygn9ga96fcwuiiuxzv5dg847s3ssgrtv6cd"]}
+    var claimnoderewardtx = {"node":"ndad3qbqbjjjvb52t28ryachdayymn3x7rwiuse79dpgtwu7","sequence":4402827188794727,"signatures":["a4jadtcadjm89u726bns6c9cpwnrwq725i6y46xzbs7kxhwyuhx9gg29u8gy54gy9kqdks75559pe5pn6duddbzxiv2ptmu2a62m8m5468442fd5rn49468k"]}
 
     var bb = new TxSignPrep().prepare(claimnoderewardtx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
-      "bmRhbmI0Ym56dmJ2ejdreHhpdDVjNHAzdnpkZjVwNjRnNnIzeTN6cXF2ZXJkczhyAA+kWRaYdWc="
+      "bmRhZDNxYnFiampqdmI1MnQyOHJ5YWNoZGF5eW1uM3g3cndpdXNlNzlkcGd0d3U3AA+kWRaYdWc="
     )
   })
   it('should build an object for ClaimNodeReward without signatures and convert to known b64', () => {
-    var claimnoderewardtx = {"node":"ndanb4bnzvbvz7kxxit5c4p3vzdf5p64g6r3y3zqqverds8r","sequence":4402827188794727}
+    var claimnoderewardtx = {"node":"ndad3qbqbjjjvb52t28ryachdayymn3x7rwiuse79dpgtwu7","sequence":4402827188794727}
 
     var bb = new TxSignPrep().prepare(claimnoderewardtx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
-      "bmRhbmI0Ym56dmJ2ejdreHhpdDVjNHAzdnpkZjVwNjRnNnIzeTN6cXF2ZXJkczhyAA+kWRaYdWc="
+      "bmRhZDNxYnFiampqdmI1MnQyOHJ5YWNoZGF5eW1uM3g3cndpdXNlNzlkcGd0d3U3AA+kWRaYdWc="
     )
   })
 })
 describe('TransferAndLock object prepare tests', () => {
   it('should build an object for TransferAndLock and convert to known b64', () => {
-    var transferandlocktx = {"source":"ndaiwz5vuf3nayqgw582ymv22mnqc87fks6up2fp2m4krwa4","destination":"ndac6huhp4ffcnjv4zqcjdt8a53j3idb8cawnb7mnisfhv99","qty":6090287018180214,"period":"1y9m15dt10h9m51s569721us","sequence":7443647051579152,"signatures":["a4jadtca7pfdxz5a4dwxw86dg6prsy7akvqnz4kvtrk9jt3kpumgq39zek9bnaaehp3gst4y3cprp2rvsuj2bykpuxsjhgg53yvej975rwgf2siyh8gykjqn"]}
+    var transferandlocktx = {"source":"ndafe522ehr9r5iabcghcxf4mjbc4pujxi26j85vtnyhd9ds","destination":"ndabsr63xfawn94qvnjvubk7e4dxyhvkfxdabftemqamywm3","qty":6090287018180214,"period":"1y9m15dt10h9m51s569721us","sequence":7443647051579152,"signatures":["a4jadtcaaq4vrbvb5qijkhdymj4ud3h8ydsm533cy6tiueqaipr6egk647b94aiiu8rj5h4hgufxhm9fxfvwsdj6w7dzkuksrrkci3z6n6b9kezgy8hzsv8n"]}
 
     var bb = new TxSignPrep().prepare(transferandlocktx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
-      "bmRhYzZodWhwNGZmY25qdjR6cWNqZHQ4YTUzajNpZGI4Y2F3bmI3bW5pc2Zodjk5MXk5bTE1ZHQxMGg5bTUxczU2OTcyMXVzABWjFXJMfnYAGnH1Ile/EG5kYWl3ejV2dWYzbmF5cWd3NTgyeW12MjJtbnFjODdma3M2dXAyZnAybTRrcndhNA=="
+      "bmRhYnNyNjN4ZmF3bjk0cXZuanZ1Yms3ZTRkeHlodmtmeGRhYmZ0ZW1xYW15d20zMXk5bTE1ZHQxMGg5bTUxczU2OTcyMXVzABWjFXJMfnYAGnH1Ile/EG5kYWZlNTIyZWhyOXI1aWFiY2doY3hmNG1qYmM0cHVqeGkyNmo4NXZ0bnloZDlkcw=="
     )
   })
   it('should build an object for TransferAndLock without signatures and convert to known b64', () => {
-    var transferandlocktx = {"destination":"ndac6huhp4ffcnjv4zqcjdt8a53j3idb8cawnb7mnisfhv99","period":"1y9m15dt10h9m51s569721us","qty":6090287018180214,"sequence":7443647051579152,"source":"ndaiwz5vuf3nayqgw582ymv22mnqc87fks6up2fp2m4krwa4"}
+    var transferandlocktx = {"destination":"ndabsr63xfawn94qvnjvubk7e4dxyhvkfxdabftemqamywm3","period":"1y9m15dt10h9m51s569721us","qty":6090287018180214,"sequence":7443647051579152,"source":"ndafe522ehr9r5iabcghcxf4mjbc4pujxi26j85vtnyhd9ds"}
 
     var bb = new TxSignPrep().prepare(transferandlocktx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
-      "bmRhYzZodWhwNGZmY25qdjR6cWNqZHQ4YTUzajNpZGI4Y2F3bmI3bW5pc2Zodjk5MXk5bTE1ZHQxMGg5bTUxczU2OTcyMXVzABWjFXJMfnYAGnH1Ile/EG5kYWl3ejV2dWYzbmF5cWd3NTgyeW12MjJtbnFjODdma3M2dXAyZnAybTRrcndhNA=="
+      "bmRhYnNyNjN4ZmF3bjk0cXZuanZ1Yms3ZTRkeHlodmtmeGRhYmZ0ZW1xYW15d20zMXk5bTE1ZHQxMGg5bTUxczU2OTcyMXVzABWjFXJMfnYAGnH1Ile/EG5kYWZlNTIyZWhyOXI1aWFiY2doY3hmNG1qYmM0cHVqeGkyNmo4NXZ0bnloZDlkcw=="
     )
   })
 })
 describe('CommandValidatorChange object prepare tests', () => {
   it('should build an object for CommandValidatorChange and convert to known b64', () => {
-    var commandvalidatorchangetx = {"public_key":"GkjHyFjwATvcYbXb","power":7147475985406603,"sequence":3268473309273449,"signatures":["a4jadtcabsj8frvhjr7n7mef97u6ttcn2bav6v8v895drdr9rqcuzh7eedavide9q2yhud2kbkhph7thuym9xpp78uc36ykghndy3tk4xr5txpbc8926pg48"]}
+    var commandvalidatorchangetx = {"public_key":"i8nKCQCIVtUojX+Y","power":7147475985406603,"sequence":3268473309273449,"signatures":["a4jadtcafpvpn8wr6xmji6vq9nwevsksbe25jeq5d7v9hrmz5raravsxu5e8sztsasepeah73yx6if2s3exssbs7n6pswrusf8kf5cc9a9hxwmdqkxghu345"]}
 
     var bb = new TxSignPrep().prepare(commandvalidatorchangetx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
-      "ABlkl28mmotHa2pIeUZqd0FUdmNZYlhiAAucqL6OnWk="
+      "ABlkl28mmotpOG5LQ1FDSVZ0VW9qWCtZAAucqL6OnWk="
     )
   })
   it('should build an object for CommandValidatorChange without signatures and convert to known b64', () => {
-    var commandvalidatorchangetx = {"power":7147475985406603,"public_key":"GkjHyFjwATvcYbXb","sequence":3268473309273449}
+    var commandvalidatorchangetx = {"power":7147475985406603,"public_key":"i8nKCQCIVtUojX+Y","sequence":3268473309273449}
 
     var bb = new TxSignPrep().prepare(commandvalidatorchangetx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
-      "ABlkl28mmotHa2pIeUZqd0FUdmNZYlhiAAucqL6OnWk="
+      "ABlkl28mmotpOG5LQ1FDSVZ0VW9qWCtZAAucqL6OnWk="
     )
   })
 })
 describe('SidechainTx object prepare tests', () => {
   it('should build an object for SidechainTx and convert to known b64', () => {
-    var sidechaintxtx = {"source":"ndaea8s3uird6kqzn2y5x3c2pf988zre6txvm46hmidy9z2a","sidechain_id":164,"sidechain_signable_bytes":"8c2R5pEehWFv7x0I","sidechain_signatures":["a4jadtca57vf7sgdkpsr8jdp6adkfte2sk5mve4znjbwfyi9hz8wkfcye4jhc47qm74qczutnigb62n7nhrfzb65a2y5sggwb9zvcn4ebvcxh78hbxi56cgg"],"sequence":666378943674263,"signatures":["a4jadtcahue4rxauc7pj8wv8cw7un4p9x5hynmt2pmynsv2j7bqm82m6g9u9p5kjxcd4tk4tsf5iii3ein69ixqc5f8tj72mubheizp3wuue3axdymmax4f9"]}
+    var sidechaintxtx = {"source":"ndam8um3twd29th6hdaye6cifut6rkzpmizkkg3gxc7fu685","sidechain_id":111,"sidechain_signable_bytes":"gBI5Dhp1YbP/rLYZ","sidechain_signatures":["a4jadtcagxd5h6aqdtezdjiezv723xienz63sb2svip7kgqid9vdcqhyruwfxdvvf8geg75gtwg7eqk48mkqgt9ijhy4mqxmtnaz59uvnf6zunda96shy2ht"],"sequence":666378943674263,"signatures":["a4jadtcarfckhn5i9e8b6rba62qhx2w6wtskrmgcr3w57246sszk3afinuvztnb8bhzv4gckhnashvnhyc5ed9zhgb69wshccuf6t7wym67p4zm59hkapj25"]}
 
     var bb = new TxSignPrep().prepare(sidechaintxtx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
-      "AAJeEXA5N5cAAAAAAAAApDhjMlI1cEVlaFdGdjd4MElhNGphZHRjYTU3dmY3c2dka3BzcjhqZHA2YWRrZnRlMnNrNW12ZTR6bmpid2Z5aTloejh3a2ZjeWU0amhjNDdxbTc0cWN6dXRuaWdiNjJuN25ocmZ6YjY1YTJ5NXNnZ3diOXp2Y240ZWJ2Y3hoNzhoYnhpNTZjZ2duZGFlYThzM3VpcmQ2a3F6bjJ5NXgzYzJwZjk4OHpyZTZ0eHZtNDZobWlkeTl6MmE="
+      "AAJeEXA5N5cAAAAAAAAAb2dCSTVEaHAxWWJQL3JMWVphNGphZHRjYWd4ZDVoNmFxZHRlemRqaWV6djcyM3hpZW56NjNzYjJzdmlwN2tncWlkOXZkY3FoeXJ1d2Z4ZHZ2ZjhnZWc3NWd0d2c3ZXFrNDhta3FndDlpamh5NG1xeG10bmF6NTl1dm5mNnp1bmRhOTZzaHkyaHRuZGFtOHVtM3R3ZDI5dGg2aGRheWU2Y2lmdXQ2cmt6cG1pemtrZzNneGM3ZnU2ODU="
     )
   })
   it('should build an object for SidechainTx without signatures and convert to known b64', () => {
-    var sidechaintxtx = {"sequence":666378943674263,"sidechain_id":164,"sidechain_signable_bytes":"8c2R5pEehWFv7x0I","sidechain_signatures":["a4jadtca57vf7sgdkpsr8jdp6adkfte2sk5mve4znjbwfyi9hz8wkfcye4jhc47qm74qczutnigb62n7nhrfzb65a2y5sggwb9zvcn4ebvcxh78hbxi56cgg"],"source":"ndaea8s3uird6kqzn2y5x3c2pf988zre6txvm46hmidy9z2a"}
+    var sidechaintxtx = {"sequence":666378943674263,"sidechain_id":111,"sidechain_signable_bytes":"gBI5Dhp1YbP/rLYZ","sidechain_signatures":["a4jadtcagxd5h6aqdtezdjiezv723xienz63sb2svip7kgqid9vdcqhyruwfxdvvf8geg75gtwg7eqk48mkqgt9ijhy4mqxmtnaz59uvnf6zunda96shy2ht"],"source":"ndam8um3twd29th6hdaye6cifut6rkzpmizkkg3gxc7fu685"}
 
     var bb = new TxSignPrep().prepare(sidechaintxtx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
-      "AAJeEXA5N5cAAAAAAAAApDhjMlI1cEVlaFdGdjd4MElhNGphZHRjYTU3dmY3c2dka3BzcjhqZHA2YWRrZnRlMnNrNW12ZTR6bmpid2Z5aTloejh3a2ZjeWU0amhjNDdxbTc0cWN6dXRuaWdiNjJuN25ocmZ6YjY1YTJ5NXNnZ3diOXp2Y240ZWJ2Y3hoNzhoYnhpNTZjZ2duZGFlYThzM3VpcmQ2a3F6bjJ5NXgzYzJwZjk4OHpyZTZ0eHZtNDZobWlkeTl6MmE="
+      "AAJeEXA5N5cAAAAAAAAAb2dCSTVEaHAxWWJQL3JMWVphNGphZHRjYWd4ZDVoNmFxZHRlemRqaWV6djcyM3hpZW56NjNzYjJzdmlwN2tncWlkOXZkY3FoeXJ1d2Z4ZHZ2ZjhnZWc3NWd0d2c3ZXFrNDhta3FndDlpamh5NG1xeG10bmF6NTl1dm5mNnp1bmRhOTZzaHkyaHRuZGFtOHVtM3R3ZDI5dGg2aGRheWU2Y2lmdXQ2cmt6cG1pemtrZzNneGM3ZnU2ODU="
     )
   })
 })
 describe('UnregisterNode object prepare tests', () => {
   it('should build an object for UnregisterNode and convert to known b64', () => {
-    var unregisternodetx = {"node":"ndaj3zb8ep363avsrhvpzgve52gc5re63n6txx2vv6s5yuy3","sequence":5623762082951376,"signatures":["a4jadtcasxp9zhnmnebw9nvr8qidan6dc6jwf2npcvbyuvxxd44d5hx5fc54fhkywhdhwv5pudwmtrb5cxkcbjd5rf79a85jhc6q9a2gpbzezwqd9bqdca3b"]}
+    var unregisternodetx = {"node":"ndahyajkaz64z5dr9cpym7bt4mxpznmimbbym6wtsujgase4","sequence":5623762082951376,"signatures":["a4jadtcafiqf9ujfqapgijmszp2dw8yqhqg6u5wffw4q296ucj27kbdhbygtn7v762jkifyr982c8h9uggzuxvsw2qpnmyx2t8ha5kbsjs543rncm3nsrdd3"]}
 
     var bb = new TxSignPrep().prepare(unregisternodetx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
-      "bmRhajN6YjhlcDM2M2F2c3JodnB6Z3ZlNTJnYzVyZTYzbjZ0eHgydnY2czV5dXkzABP6yCVBcNA="
+      "bmRhaHlhamthejY0ejVkcjljcHltN2J0NG14cHpubWltYmJ5bTZ3dHN1amdhc2U0ABP6yCVBcNA="
     )
   })
   it('should build an object for UnregisterNode without signatures and convert to known b64', () => {
-    var unregisternodetx = {"node":"ndaj3zb8ep363avsrhvpzgve52gc5re63n6txx2vv6s5yuy3","sequence":5623762082951376}
+    var unregisternodetx = {"node":"ndahyajkaz64z5dr9cpym7bt4mxpznmimbbym6wtsujgase4","sequence":5623762082951376}
 
     var bb = new TxSignPrep().prepare(unregisternodetx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
-      "bmRhajN6YjhlcDM2M2F2c3JodnB6Z3ZlNTJnYzVyZTYzbjZ0eHgydnY2czV5dXkzABP6yCVBcNA="
+      "bmRhaHlhamthejY0ejVkcjljcHltN2J0NG14cHpubWltYmJ5bTZ3dHN1amdhc2U0ABP6yCVBcNA="
     )
   })
 })
 describe('Unstake object prepare tests', () => {
   it('should build an object for Unstake and convert to known b64', () => {
-    var unstaketx = {"target":"ndadvaud9mhekn8jxc7sbgrjup554iicq7znk9swe5nu7khe","sequence":3820780875409098,"signatures":["a4jadtcaxmf7r3viw28j99gqzcbztna6942n7mcbq8xej6kgnjxczjkxhmv8s9nqgu9emnfqy2aparqwffc3252dwxw4fdvncu4ke4uq9yiybet8tmyki78s"]}
+    var unstaketx = {"target":"ndaf3qe37tqrs3a3dabei7u6unisd7wfidqv6m5fe7jsx8ic","sequence":3820780875409098,"signatures":["a4jadtcakhmew9ishr9svvhn446utu88nkazjesvhpkghdrhmriqiiiczbx4ry2hq45s7p8pnvh33y8mzrveqx4skfz878nqpuwq6mdy76kyfj8qzixcunav"]}
 
     var bb = new TxSignPrep().prepare(unstaketx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
-      "AA2S+t7X5spuZGFkdmF1ZDltaGVrbjhqeGM3c2Jncmp1cDU1NGlpY3E3em5rOXN3ZTVudTdraGU="
+      "AA2S+t7X5spuZGFmM3FlMzd0cXJzM2EzZGFiZWk3dTZ1bmlzZDd3ZmlkcXY2bTVmZTdqc3g4aWM="
     )
   })
   it('should build an object for Unstake without signatures and convert to known b64', () => {
-    var unstaketx = {"sequence":3820780875409098,"target":"ndadvaud9mhekn8jxc7sbgrjup554iicq7znk9swe5nu7khe"}
+    var unstaketx = {"sequence":3820780875409098,"target":"ndaf3qe37tqrs3a3dabei7u6unisd7wfidqv6m5fe7jsx8ic"}
 
     var bb = new TxSignPrep().prepare(unstaketx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
-      "AA2S+t7X5spuZGFkdmF1ZDltaGVrbjhqeGM3c2Jncmp1cDU1NGlpY3E3em5rOXN3ZTVudTdraGU="
+      "AA2S+t7X5spuZGFmM3FlMzd0cXJzM2EzZGFiZWk3dTZ1bmlzZDd3ZmlkcXY2bTVmZTdqc3g4aWM="
     )
   })
 })
 describe('Issue object prepare tests', () => {
   it('should build an object for Issue and convert to known b64', () => {
-    var issuetx = {"qty":2805298263287969,"sequence":8998038698708596,"signatures":["a4jadtcahat66r47zzt2hupv3xcja53dymhvjee89u5qfxs64mmedirfi4hi5g7rzfecsmafhd3nu4mwbap4sq7dv3xfrzm62ut64pq94tffdgjtpm7p9g6r"]}
+    var issuetx = {"qty":2805298263287969,"sequence":8998038698708596,"signatures":["a4jadtcanyp3yvddkqj3cw3243zh83znq9mzvnek3um3u273gszciv63mmm4uj6hd8titzz463gqw68tj6m9ja4ebj6x7cu2xq79h3scz4pz42muias8hxrb"]}
 
     var bb = new TxSignPrep().prepare(issuetx)
     var b64 = bb.b64encode()
@@ -397,26 +397,6 @@ describe('Issue object prepare tests', () => {
     var b64 = bb.b64encode()
     expect(b64).toEqual(
       "AAn3Z2Z46KEAH/erJE/OdA=="
-    )
-  })
-})
-describe('ClaimChildAccount object prepare tests', () => {
-  it('should build an object for ClaimChildAccount and convert to known b64', () => {
-    var claimchildaccounttx = {"target":"ndacz32aaimsgqmaxbzvkben22fcuyip6qcs6x7ktfr87xhu","child":"ndackqmf7kpfxbpbdvser8hwmb8wq8kqdm7ybgh5776jsr5f","child_ownership":"npuba8jadtbbeab5xga2ynj5tayvkhbbteptcs6nc5u9m5ia9x6jkv72a4qkssznngfq2mhujzgg","child_signature":"a4jadtcat9he236smw87p4ggn9mtv6cakb5cy7fprqdwmeab3x6ycwg9ipqieqwky9pcu56a8f8f7s6vmpx4cmqiep6f9zdxwjd59z2bie6je7y9z8p9x4tp","child_validation_keys":["npuba8jadtbbea5xdfu3j8tuih52it9zyvyvy6vnj9zgtnqspsbz6pmnjd9ydfe2e2t6kbwc2mki"],"child_validation_script":"PiVEGrP0dvBtDW/L","sequence":2114375199125313,"signatures":["a4jadtcawf7bszzedeipvx4vp4pj7eez9qvvsud9dxctv3qk59j4zbpcuhw85ubujr4kjqcb3shd8nin3xhvgpc8hdd3vsns5ugqx4ge883xshgdyrtkzew3"]}
-
-    var bb = new TxSignPrep().prepare(claimchildaccounttx)
-    var b64 = bb.b64encode()
-    expect(b64).toEqual(
-      "bmRhY2txbWY3a3BmeGJwYmR2c2VyOGh3bWI4d3E4a3FkbTd5YmdoNTc3NmpzcjVmbnB1YmE4amFkdGJiZWFiNXhnYTJ5bmo1dGF5dmtoYmJ0ZXB0Y3M2bmM1dTltNWlhOXg2amt2NzJhNHFrc3N6bm5nZnEybWh1anpnZ2E0amFkdGNhdDloZTIzNnNtdzg3cDRnZ245bXR2NmNha2I1Y3k3ZnBycWR3bWVhYjN4Nnljd2c5aXBxaWVxd2t5OXBjdTU2YThmOGY3czZ2bXB4NGNtcWllcDZmOXpkeHdqZDU5ejJiaWU2amU3eTl6OHA5eDR0cG5wdWJhOGphZHRiYmVhNXhkZnUzajh0dWloNTJpdDl6eXZ5dnk2dm5qOXpndG5xc3BzYno2cG1uamQ5eWRmZTJlMnQ2a2J3YzJta2lQaVZFR3JQMGR2QnREVy9MAAeDA1aqb0FuZGFjejMyYWFpbXNncW1heGJ6dmtiZW4yMmZjdXlpcDZxY3M2eDdrdGZyODd4aHU="
-    )
-  })
-  it('should build an object for ClaimChildAccount without signatures and convert to known b64', () => {
-    var claimchildaccounttx = {"child":"ndackqmf7kpfxbpbdvser8hwmb8wq8kqdm7ybgh5776jsr5f","child_ownership":"npuba8jadtbbeab5xga2ynj5tayvkhbbteptcs6nc5u9m5ia9x6jkv72a4qkssznngfq2mhujzgg","child_validation_keys":["npuba8jadtbbea5xdfu3j8tuih52it9zyvyvy6vnj9zgtnqspsbz6pmnjd9ydfe2e2t6kbwc2mki"],"child_validation_script":"PiVEGrP0dvBtDW/L","sequence":2114375199125313,"target":"ndacz32aaimsgqmaxbzvkben22fcuyip6qcs6x7ktfr87xhu"}
-
-    var bb = new TxSignPrep().prepare(claimchildaccounttx)
-    var b64 = bb.b64encode()
-    expect(b64).toEqual(
-      "bmRhY2txbWY3a3BmeGJwYmR2c2VyOGh3bWI4d3E4a3FkbTd5YmdoNTc3NmpzcjVmbnB1YmE4amFkdGJiZWFiNXhnYTJ5bmo1dGF5dmtoYmJ0ZXB0Y3M2bmM1dTltNWlhOXg2amt2NzJhNHFrc3N6bm5nZnEybWh1anpnZ2E0amFkdGNhdDloZTIzNnNtdzg3cDRnZ245bXR2NmNha2I1Y3k3ZnBycWR3bWVhYjN4Nnljd2c5aXBxaWVxd2t5OXBjdTU2YThmOGY3czZ2bXB4NGNtcWllcDZmOXpkeHdqZDU5ejJiaWU2amU3eTl6OHA5eDR0cG5wdWJhOGphZHRiYmVhNXhkZnUzajh0dWloNTJpdDl6eXZ5dnk2dm5qOXpndG5xc3BzYno2cG1uamQ5eWRmZTJlMnQ2a2J3YzJta2lQaVZFR3JQMGR2QnREVy9MAAeDA1aqb0FuZGFjejMyYWFpbXNncW1heGJ6dmtiZW4yMmZjdXlpcDZxY3M2eDdrdGZyODd4aHU="
     )
   })
 })
