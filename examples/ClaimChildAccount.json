@@ -1,14 +1,15 @@
 {
-  "target": "ndafe2mi8xdpr96w9djk6xphxmv4b48sczrzrq8j5iqhx46h",
-  "child": "ndah9mc4j6ajnngwed42ran935snq8wxehvbt5rcqugtkwgy",
-  "child_ownership": "npuba8jadtbbeb6c3ywh5pnibt4qrxcs2eq3drccsnc97ba5s2288kgtrwa9beamctu47szrhyf7",
-  "child_signature": "a4jadtcaqw4d8gfb74e3xy868z23aka9fj72nms45iz4am9jxaq84h5s7psjgh583xzt7tyc6s37fgbxbmvfcqtbnznhmpb7nrc6nm57y8cepzeifnj73zeu",
+  "target": "ndakv3amr7dy94ra9huyqwqeie2yp24qjky873ixrkvqyfmz",
+  "child": "ndafmy7cqaw3rssa3kq2rcsndvvr3s4bi6gjwd8rrvifizhi",
+  "child_ownership": "npuba8jadtbbeczx2j6atd6ufxgzkn7k4wkdsc29shmruwf7bed7j4n3w835xxrvdhgu9vc4zpyi",
+  "child_signature": "a4jadtcaaxectiqktxwmb7r32xeucisrv4jgux5ze5zss7b323in5jipdfbh8tkw5y5k29ka9x45ghumnci8wuzj2m3ryf2srsi6f77r53nsqddqf5zbwykn",
+  "child_settlement_period": "8m23dt16h44m36s771718us",
   "child_validation_keys": [
-    "npuba8jadtbbeb5vxuuyf5fygn697rn7gftydhednadi2wz5r5dwef7czmawbt9q2fs2bgbf9hdr"
+    "npuba8jadtbbeaxsxcr3q9txk44w7qwte6jptcw5x98fw9kwvak9eeziyz6tnpchvbwspceix9cz"
   ],
-  "child_validation_script": "t0LAzuF9liNtZa3w",
-  "sequence": 2114375199125313,
+  "child_validation_script": "Lnn/IgJ3A7+ts6SJ",
+  "sequence": 5884718809965732,
   "signatures": [
-    "a4jadtcaen47jwe968kcn7iswg33yja7n2zj35d5j746ijqawkeia7m3eavr8kyy56nqkdc4dudzj2uvut6b73si4j8r29e22atyb9dxzfaakehdde3vbq6d"
+    "a4jadtca3pnghtccubb2hxi5i2vv8wiwaqy6hzmd44ph9pc2uaeqhck5nrsppbezfyzuqhs9tetckx2nhm6jk3gmmqcqa98i2d3q63n8c67cqwxiq3ueyu7v"
   ]
 }
