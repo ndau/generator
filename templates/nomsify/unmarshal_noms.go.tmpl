@@ -163,8 +163,8 @@
         err = {{.MakeLocal}}Value.UnmarshalText([]byte({{.MakeLocal}}String))
     } else {
         err = fmt.Errorf(
-            "{{.Context.Type}}.UnmarshalNoms expected ValidationKeys Item to be a nt.String; found %s",
-            reflect.ValueOf({{.Name}}).Type(),
+            "{{.Context.Type}}.UnmarshalNoms expected {{.Value}} to be a nt.String; found %s",
+            reflect.ValueOf({{.Value}}).Type(),
         )
     }
 {{- end}}
