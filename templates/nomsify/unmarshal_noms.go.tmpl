@@ -24,7 +24,7 @@
     {{- else if .IsSet}}
         {{- template "u_set_value" .}}
     {{- else if .IsMap}}
-        {{template "u_map_value" .}}
+        {{- template "u_map_value" .}}
     {{- else if .IsPointer }}
         {{- template "u_pointer_value" .}}
     {{- else if .IsTextMarshaler }}
@@ -36,9 +36,9 @@
 
 {{define "u_map" -}}
     // template u_map: {{.Name}}
-    if {{.MakeLocal}}Map, ok := {{.Value}}.(nt.Map); ok {
-        {{.Name}} = make({{.Type}})
-        {{.MakeLocal}}Map.Iter(func({{.MakeLocal}}Key, {{.MakeLocal}}Value nt.Value) (stop bool) {
+    {{.MakeLocal}}GMap := make({{.Type}})
+    if {{.MakeLocal}}NMap, ok := {{.Value}}.(nt.Map); ok {
+        {{.MakeLocal}}NMap.Iter(func({{.MakeLocal}}Key, {{.MakeLocal}}Value nt.Value) (stop bool) {
             {{.MakeLocal}}KeyString, ok := {{.MakeLocal}}Key.(nt.String)
             if !ok {
                 err = fmt.Errorf(
@@ -51,17 +51,17 @@
             if err != nil {
                 return true
             }
-            {{.Name}}[string({{.MakeLocal}}KeyString)] = {{template "u_decompose_value" (.MakeLocal | printf "%sValue" | .Inner)}}
+            {{.MakeLocal}}GMap[string({{.MakeLocal}}KeyString)] = {{template "u_decompose_value" (.MakeLocal | printf "%sValue" | .Inner)}}
             return false
         })
     } else {
         err = fmt.Errorf(
-            "{{.Context.Type}}.UnmarshalNoms expected {{.Name}} to be a nt.Map; found %s",
+            "{{.Context.Type}}.UnmarshalNoms expected {{.MakeLocal}}GMap to be a nt.Map; found %s",
             reflect.TypeOf({{.Value}}),
         )
     }
 {{- end}}
-{{define "u_map_value"}}{{.Name}}{{end}}
+{{define "u_map_value"}}{{.MakeLocal}}GMap{{end}}
 {{define "u_nomsmarshaler" -}}
     // template u_nomsmarshaler: {{.Name}}
     var {{.MakeLocal}}Instance {{.Type}}
@@ -138,24 +138,25 @@
 {{define "u_set_value"}}{{.MakeLocal}}GoSet{{end}}
 {{define "u_slice" -}}
     // template u_slice: {{.Name}}
+    var {{.MakeLocal}}Slice {{.Type}}
     if {{.MakeLocal}}List, ok := {{.Value}}.(nt.List); ok {
-        {{.Name}} = make({{.Type}}, 0, {{.MakeLocal}}List.Len())
+        {{.MakeLocal}}Slice = make({{.Type}}, 0, {{.MakeLocal}}List.Len())
         {{.MakeLocal}}List.Iter(func({{.MakeLocal}}Item nt.Value, idx uint64) (stop bool) {
             {{template "u_decompose" .InnerValue (.MakeLocal | printf "%sItem") (.MakeLocal | printf "%sItem")}}
             if err != nil {
                 return true
             }
-            {{.Name}} = append({{.Name}}, {{template "u_decompose_value" (.MakeLocal | printf "%sItem" | .Inner)}})
+            {{.MakeLocal}}Slice = append({{.MakeLocal}}Slice, {{template "u_decompose_value" (.MakeLocal | printf "%sItem" | .Inner)}})
             return false
         })
     } else {
         err = fmt.Errorf(
-            "{{.Context.Type}}.UnmarshalNoms expected {{.Name}} to be a nt.List; found %s",
+            "{{.Context.Type}}.UnmarshalNoms expected {{.Value}} to be a nt.List; found %s",
             reflect.TypeOf({{.Value}}),
         )
     }
 {{- end}}
-{{define "u_slice_value"}}{{.Name}}{{end}}
+{{define "u_slice_value"}}{{.MakeLocal}}Slice{{end}}
 {{define "u_textmarshaler" -}}
     // template u_textmarshaler: {{.Name}}
     var {{.MakeLocal}}Value {{.Type}}
@@ -195,9 +196,9 @@ func (x *{{.Type}}) UnmarshalNoms(value nt.Value) (err error) {
             // {{.Name}} ({{.Type}}->{{.Expr}}) is primitive: {{.IsPrimitive}}
             case "{{.BareName}}":
                 {{- template "u_decompose" .}}
-                {{if not .IsCollection }}
+
                     {{.Name}} = {{template "u_decompose_value" .}}
-                {{end}}
+
             {{- end}}
             }
         }
