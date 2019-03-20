@@ -115,11 +115,11 @@
 {{define "u_primitive_value"}}{{.MakeLocal}}Typed{{end}}
 {{define "u_set" -}}
     // template u_set: {{.Name}}
-    {{.Name}} = make(map[string]struct{})
+    {{.MakeLocal}}GoSet := make(map[string]struct{})
     if {{.MakeLocal}}Set, ok := {{.Value}}.(nt.Set); ok {
         {{.MakeLocal}}Set.Iter(func({{.MakeLocal}}Item nt.Value) (stop bool) {
             if {{.MakeLocal}}ItemString, ok := {{.MakeLocal}}Item.(nt.String); ok {
-                {{.Name}}[string({{.MakeLocal}}ItemString)] = struct{}{}
+                {{.MakeLocal}}GoSet[string({{.MakeLocal}}ItemString)] = struct{}{}
             } else {
                 err = fmt.Errorf(
                     "{{.Context.Type}}.AccountData.UnmarshalNoms expected {{.BareName}}Item to be a nt.String; found %s",
@@ -135,7 +135,7 @@
         )
     }
 {{- end}}
-{{define "u_set_value"}}{{.Name}}{{end}}
+{{define "u_set_value"}}{{.MakeLocal}}GoSet{{end}}
 {{define "u_slice" -}}
     // template u_slice: {{.Name}}
     if {{.MakeLocal}}List, ok := {{.Value}}.(nt.List); ok {
