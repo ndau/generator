@@ -75,7 +75,7 @@ func (f field) IsMap() bool {
 
 func (f field) IsNumeric() bool {
 	switch f.Type() {
-	case "int", "int8", "int16", "int32", "int64", "uint", "uint8", "uint16", "uint32", "uint64", "eai.Rate", "math.Ndau", "math.Timestamp", "math.Duration":
+	case "int", "int8", "int16", "int32", "int64", "uint", "uint8", "uint16", "uint32", "uint64", "eai.Rate", "math.Ndau", "math.Timestamp", "math.Duration", "pricecurve.Nanocent":
 		return true
 	}
 	return false
