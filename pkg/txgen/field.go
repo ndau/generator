@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/oneiro-ndev/ndaumath/pkg/address"
+	"github.com/oneiro-ndev/ndaumath/pkg/pricecurve"
 	"github.com/oneiro-ndev/ndaumath/pkg/signature"
 	math "github.com/oneiro-ndev/ndaumath/pkg/types"
 )
@@ -66,6 +67,8 @@ func (f *Field) fillFieldFromType() error {
 		f.nlit(rand.Int63n(maxJSInt))
 	case "math.Duration":
 		f.nlit(rand.Int63n(math.Year * 5))
+	case "pricecurve.Nanocent":
+		f.nlit(rand.Int63n(maxJSInt))
 
 	case "byte":
 		bytes, err := randBytes(1)
@@ -121,7 +124,7 @@ func (f *Field) fillFieldFromType() error {
 	case "string", "[]byte":
 		f.Length = func(s string) string { return fmt.Sprintf("len(%s)", s) }
 		f.Bytes = func(s string) string { return fmt.Sprintf("[]byte(%s)", s) }
-	case "int64", "uint64", "math.Ndau", "math.Duration":
+	case "int64", "uint64", "math.Ndau", "math.Duration", "pricecurve.Nanocent":
 		f.Length = func(string) string { return "8" }
 		f.Bytes = func(s string) string { return fmt.Sprintf("intbytes(uint64(%s))", s) }
 	case "byte":
@@ -181,7 +184,7 @@ func (f Field) Literal() string {
 	case []byte:
 		return bytesS(field)
 
-	case math.Ndau, math.Duration:
+	case math.Ndau, math.Duration, pricecurve.Nanocent:
 		return fmt.Sprintf("%d", field)
 
 	case address.Address:
