@@ -192,7 +192,7 @@ func (x *{{.Type}}) UnmarshalNoms(value nt.Value) (err error) {
     vs.IterFields(func(name string, value nt.Value) {
         if err == nil {
             switch name {
-            {{- range .Fields}}
+            {{- range .AllFields}}
             // {{.Name}} ({{.Type}}->{{.Expr}}) is primitive: {{.IsPrimitive}}
             case "{{.BareName}}":
                 {{- template "u_decompose" .}}
