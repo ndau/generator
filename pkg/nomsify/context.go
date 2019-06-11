@@ -18,9 +18,6 @@ type context struct {
 	typeNode *ast.TypeSpec
 }
 
-// Fields containing this string in their names are managed variables.
-const managedVarName = "ManagedVar"
-
 // find a node by name and set it
 func (c *context) scan(name string) {
 	ast.Inspect(c.file, func(node ast.Node) (recurseInto bool) {
@@ -67,8 +64,20 @@ func (c context) SortedManagedFields() []field {
 	return c.sortFields(c.ManagedFields())
 }
 
+func (c context) SortedAllFields() []field {
+	return c.sortFields(c.AllFields())
+}
+
+func (c context) TotalSortedFieldCount() int {
+	return len(c.SortedAllFields())
+}
+
 func (c context) HasManagedVars() bool {
 	return len(c.ManagedFields()) > 0
+}
+
+func (c context) ManagedVarName() string {
+	return "ManagedVar"
 }
 
 func (c context) getFields(wantCore, wantManaged bool) []field {
@@ -76,6 +85,7 @@ func (c context) getFields(wantCore, wantManaged bool) []field {
 	if !ok {
 		return nil
 	}
+	managedVarName := c.ManagedVarName()
 	fields := make([]field, 0, structDef.Fields.NumFields())
 	for _, fAST := range structDef.Fields.List {
 		for _, fN := range fAST.Names {

@@ -131,80 +131,81 @@ func init{{.Type}}StructTemplate(managedFields []string) {
             "{{.BareName}}",
         {{end -}}
     }
-    {{.Type | LowerFirst}}FieldNames = append({{.Type | LowerFirst}}FieldNames, managedFields...)
+    if len(managedFields) > 0 {
+        {{.Type | LowerFirst}}FieldNames = append({{.Type | LowerFirst}}FieldNames, managedFields...)
+        sort.Sort(sort.StringSlice({{.Type | LowerFirst}}FieldNames))
+    }
     {{.Type | LowerFirst}}StructTemplate = nt.MakeStructTemplate("{{.Type}}", {{.Type | LowerFirst}}FieldNames)
 }
 
 func need{{.Type}}StructTemplateInit(managedFields []string) bool {
-    // If we have more managed fields than we have fields, we know we have to re-init.
-    if len({{.Type | LowerFirst}}FieldNames) < len(managedFields) {
-        return true
-    }
-
-    // If there are any managed fields in the first part of the list, we have to re-init.
-    offset := len({{.Type | LowerFirst}}FieldNames) - len(managedFields)
-    if offset > 0 && strings.Contains({{.Type | LowerFirst}}FieldNames[offset-1], "ManagedVar") {
-        return true
-    }
-
-    // If the managed fields don't appear at the end in the proper order, we have to re-init.
-    for i, v := range managedFields {
-        if {{.Type | LowerFirst}}FieldNames[offset+i] != v {
-            return true
+    // Loop over the full field name list and make sure that every managed var in it also appears
+    // in the given managed field list.  They are both sorted, so the loop is O(linear).
+    i := 0
+    iLimit := len(managedFields)
+    for _, fieldName := range {{.Type | LowerFirst}}FieldNames {
+        if strings.Contains(fieldName, "{{.ManagedVarName}}") {
+            if i == iLimit || managedFields[i] != fieldName {
+                // We found a managed var in the full list that wasn't in the given list,
+                // or the managed field name in sorted order doesn't match; re-init.
+                return true
+            }
+            i++
+            // Keep going even if i == iLimit, to ensure no other managed vars in the full list.
         }
     }
 
-    // The fields list has all the core fields and managed fields in the right place, no re-init.
-    return false
+    // Re-init if we didn't find all of the given managed fields in the full list.
+    return i != iLimit
 }
 {{- end}}
 
 // MarshalNoms implements noms/go/marshal.Marshaler
 func (x {{.Type}}) MarshalNoms(vrw nt.ValueReadWriter) ({{.Type | LowerFirst}}Value nt.Value, err error) {
-    {{- range .CoreFields}}
+    {{- range .AllFields}}
         // {{.Name}} ({{.Type}}->{{.Expr}}) is primitive: {{.IsPrimitive}}
         {{if not .IsPrimitive}}
             {{- template "decompose" .}}
         {{- end}}
     {{end -}}
 
-    values := []nt.Value{
-        {{range .SortedCoreFields -}}
-            // {{.Name}} ({{.Type}})
-            {{if .IsPrimitive -}}
-                {{.MarshalPrimitive (printf "%s" .Name)}}
-            {{- else -}}
-                {{- template "decompose_value" .}}
-            {{- end}},
-        {{end -}}
-    }
-
     {{if .HasManagedVars}}
     var managedFields []string
 
-    if x.ManagedVars != nil {
-        {{- range .ManagedFields}}
-            // {{.Name}} ({{.Type}}->{{.Expr}}) is primitive: {{.IsPrimitive}}
-            {{if not .IsPrimitive}}
-                {{- template "decompose" .}}
-            {{- end}}
-        {{- end}}
-
-        {{- range .SortedManagedFields}}
-            // {{.Name}} ({{.Type}})
-            managedFields = append(managedFields, "{{.BareName}}")
-            {{if .IsPrimitive -}}
-                values = append(values, {{.MarshalPrimitive (printf "%s" .Name)}})
-            {{- else -}}
-                values = append(values, {{- template "decompose_value" .}})
-            {{- end}}
+    values := make([]nt.Value, 0, {{.TotalSortedFieldCount}})
+    {{range .SortedAllFields -}}
+        // {{.Name}} ({{.Type}})
+        {{if .IsManagedVar -}}
+        if x.ManagedVars != nil {
+            if _, ok := x.ManagedVars["{{.BareName}}"]; ok {
+                managedFields = append(managedFields, "{{.BareName}}")
         {{end -}}
-    }
+        {{if .IsPrimitive -}}
+            values = append(values, {{.MarshalPrimitive (printf "%s" .Name)}})
+        {{- else -}}
+            values = append(values, {{- template "decompose_value" .}})
+        {{- end}}
+        {{if .IsManagedVar -}}
+            }
+        }
+        {{end -}}
+    {{end}}
 
     if need{{.Type}}StructTemplateInit(managedFields) {
         init{{.Type}}StructTemplate(managedFields)
     }
-    {{- end}}
+    {{else -}}
+    values := []nt.Value{
+    {{range .SortedCoreFields -}}
+        // {{.Name}} ({{.Type}})
+        {{if .IsPrimitive -}}
+            {{.MarshalPrimitive (printf "%s" .Name)}}
+        {{- else -}}
+            {{- template "decompose_value" .}}
+        {{- end}},
+    {{end -}}
+    }
+    {{end}}
 
     return {{.Type | LowerFirst}}StructTemplate.NewStruct(values), nil
 }

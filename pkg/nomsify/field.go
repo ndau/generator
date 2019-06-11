@@ -37,6 +37,10 @@ func (f field) BareName() string {
 	return fields[len(fields)-1]
 }
 
+func (f field) IsManagedVar() bool {
+	return strings.Contains(f.BareName(), f.Context.ManagedVarName())
+}
+
 func (f field) Expr() string {
 	return fmt.Sprint(reflect.TypeOf(f.expr))
 }
