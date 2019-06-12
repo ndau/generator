@@ -45,6 +45,10 @@ func (f field) IsManagedVarsMap() bool {
 	return f.BareName() == f.Context.ManagedVarsMapName()
 }
 
+func (f field) ManagedVarBaseName() string {
+	return strings.TrimPrefix(f.BareName(), f.Context.ManagedVarName())
+}
+
 func (f field) ManagedVarsMapName() string {
 	return f.Context.ManagedVarsMapName()
 }
@@ -216,6 +220,10 @@ func (f field) Type() string {
 	var buf bytes.Buffer
 	printer.Fprint(&buf, f.Context.fset, f.expr)
 	return buf.String()
+}
+
+func (f field) StructType() string {
+	return f.Context.Type()
 }
 
 func (f field) Value() string {

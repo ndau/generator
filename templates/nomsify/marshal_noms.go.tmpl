@@ -158,6 +158,21 @@ func need{{.Type}}StructTemplateInit(managedFields []string) bool {
     // Re-init if we didn't find all of the given managed fields in the full list.
     return i != iLimit
 }
+
+{{- range .ManagedFields}}
+{{if not .IsManagedVarsMap -}}
+// Get{{.ManagedVarBaseName}} returns the struct's {{.BareName}} value.
+func (x *{{.StructType}}) Get{{.ManagedVarBaseName}}() {{.Type}} {
+	return x.{{.BareName}}
+}
+
+// Set{{.ManagedVarBaseName}} sets the struct's {{.BareName}} value.
+func (x *{{.StructType}}) Set{{.ManagedVarBaseName}}(val {{.Type}}) {
+	ensureManagedVar(&x.{{.ManagedVarsMapName}}, "{{.BareName}}")
+	x.{{.BareName}} = val
+}
+{{end -}}
+{{end -}}
 {{- end}}
 
 // MarshalNoms implements noms/go/marshal.Marshaler
