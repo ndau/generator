@@ -176,8 +176,10 @@ func (x {{.Type}}) MarshalNoms(vrw nt.ValueReadWriter) ({{.Type | LowerFirst}}Va
     {{range .SortedAllFields -}}
         // {{.Name}} ({{.Type}})
         {{if .IsManagedVar -}}
-        if x.ManagedVars != nil {
-            if _, ok := x.ManagedVars["{{.BareName}}"]; ok {
+        if x.{{.ManagedVarsMapName}} != nil {
+            {{if not .IsManagedVarsMap -}}
+            if _, ok := x.{{.ManagedVarsMapName}}["{{.BareName}}"]; ok {
+            {{end -}}
                 managedFields = append(managedFields, "{{.BareName}}")
         {{end -}}
         {{if .IsPrimitive -}}
@@ -186,7 +188,9 @@ func (x {{.Type}}) MarshalNoms(vrw nt.ValueReadWriter) ({{.Type | LowerFirst}}Va
             values = append(values, {{- template "decompose_value" .}})
         {{- end}}
         {{if .IsManagedVar -}}
+            {{if not .IsManagedVarsMap -}}
             }
+            {{end -}}
         }
         {{end -}}
     {{end}}

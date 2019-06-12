@@ -41,6 +41,14 @@ func (f field) IsManagedVar() bool {
 	return strings.Contains(f.BareName(), f.Context.ManagedVarName())
 }
 
+func (f field) IsManagedVarsMap() bool {
+	return f.BareName() == f.Context.ManagedVarsMapName()
+}
+
+func (f field) ManagedVarsMapName() string {
+	return f.Context.ManagedVarsMapName()
+}
+
 func (f field) Expr() string {
 	return fmt.Sprint(reflect.TypeOf(f.expr))
 }

@@ -80,6 +80,10 @@ func (c context) ManagedVarName() string {
 	return "ManagedVar"
 }
 
+func (c context) ManagedVarsMapName() string {
+	return "ManagedVars"
+}
+
 func (c context) getFields(wantCore, wantManaged bool) []field {
 	structDef, ok := c.typeNode.Type.(*ast.StructType)
 	if !ok {
