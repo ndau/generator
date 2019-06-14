@@ -144,7 +144,7 @@ func need{{.Type}}StructTemplateInit(managedFields []string) bool {
     i := 0
     iLimit := len(managedFields)
     for _, fieldName := range {{.Type | LowerFirst}}FieldNames {
-        if strings.Contains(fieldName, "{{.ManagedVarName}}") {
+        if strings.HasPrefix(fieldName, "{{.ManagedVarName}}") || strings.HasPrefix(fieldName, "{{.HasPrefix}}{{.ManagedVarName}}") {
             if i == iLimit || managedFields[i] != fieldName {
                 // We found a managed var in the full list that wasn't in the given list,
                 // or the managed field name in sorted order doesn't match; re-init.
@@ -159,17 +159,23 @@ func need{{.Type}}StructTemplateInit(managedFields []string) bool {
     return i != iLimit
 }
 
+// IsManagedVarSet returns whether the given managed var has ever been set in the {{.Type}}.
+// Useful for unit testing.  Not intended to be needed by release code.
+func (x *{{.Type}}) IsManagedVarSet(name string) bool {
+     return isManagedVarSet(x.{{.ManagedVarsMapName}}, name)
+}
+
 {{- range .ManagedFields}}
 {{if not .IsManagedVarsMap -}}
 // Get{{.ManagedVarBaseName}} returns the struct's {{.BareName}} value.
 func (x *{{.StructType}}) Get{{.ManagedVarBaseName}}() {{.Type}} {
-	return x.{{.BareName}}
+    return x.{{.BareName}}
 }
 
 // Set{{.ManagedVarBaseName}} sets the struct's {{.BareName}} value.
 func (x *{{.StructType}}) Set{{.ManagedVarBaseName}}(val {{.Type}}) {
-	ensureManagedVar(&x.{{.ManagedVarsMapName}}, "{{.BareName}}")
-	x.{{.BareName}} = val
+    ensureManagedVar(&x.{{.ManagedVarsMapName}}, "{{.ManagedVarBaseName}}")
+    x.{{.BareName}} = val
 }
 {{end -}}
 {{end -}}
@@ -193,7 +199,7 @@ func (x {{.Type}}) MarshalNoms(vrw nt.ValueReadWriter) ({{.Type | LowerFirst}}Va
         {{if .IsManagedVar -}}
         if x.{{.ManagedVarsMapName}} != nil {
             {{if not .IsManagedVarsMap -}}
-            if _, ok := x.{{.ManagedVarsMapName}}["{{.BareName}}"]; ok {
+            if _, ok := x.{{.ManagedVarsMapName}}["{{.ManagedVarBaseName}}"]; ok {
             {{end -}}
                 managedFields = append(managedFields, "{{.BareName}}")
         {{end -}}

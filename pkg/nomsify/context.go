@@ -44,6 +44,10 @@ func (c context) Type() string {
 	return c.typeNode.Name.Name
 }
 
+func (c context) HasPrefix() string {
+	return hasPrefix
+}
+
 func (c context) CoreFields() []field {
 	return c.getFields(true, false)
 }
@@ -77,11 +81,15 @@ func (c context) HasManagedVars() bool {
 }
 
 func (c context) ManagedVarName() string {
-	return "ManagedVar"
+	return "managedVar"
 }
 
 func (c context) ManagedVarsMapName() string {
-	return "ManagedVars"
+	return "managedVars"
+}
+
+func (c context) IsManagedVar(name string) bool {
+	return strings.HasPrefix(name, c.ManagedVarName()) || strings.HasPrefix(name, hasPrefix + c.ManagedVarName())
 }
 
 func (c context) getFields(wantCore, wantManaged bool) []field {
@@ -89,11 +97,10 @@ func (c context) getFields(wantCore, wantManaged bool) []field {
 	if !ok {
 		return nil
 	}
-	managedVarName := c.ManagedVarName()
 	fields := make([]field, 0, structDef.Fields.NumFields())
 	for _, fAST := range structDef.Fields.List {
 		for _, fN := range fAST.Names {
-			isManaged := strings.Contains(fN.Name, managedVarName)
+			isManaged := c.IsManagedVar(fN.Name)
 			if wantCore && !isManaged || wantManaged && isManaged {
 				fields = append(fields, c.newField(fN.Name, fAST))
 			}
@@ -107,7 +114,7 @@ func (c context) sortFields(fields []field) []field {
 	for _, f := range fields {
 		if f.IsPointer() {
 			ptrspecifiers = append(ptrspecifiers, field{
-				Name:         "x.Has" + f.BareName(),
+				Name:         xHasPrefix + f.BareName(),
 				typeOverride: "bool",
 				Context:      &c,
 			})
