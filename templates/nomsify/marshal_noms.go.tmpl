@@ -160,21 +160,35 @@ func need{{.Type}}StructTemplateInit(managedFields []string) bool {
 }
 
 // IsManagedVarSet returns whether the given managed var has ever been set in the {{.Type}}.
-// Useful for unit testing.  Not intended to be needed by release code.
 func (x *{{.Type}}) IsManagedVarSet(name string) bool {
-     return isManagedVarSet(x.{{.ManagedVarsMapName}}, name)
+    if {{.ManagedVarsMap}} == nil {
+        return false
+    }
+    _, ok := {{.ManagedVarsMap}}[name]
+    return ok
+}
+
+// Ensure the managed vars map exists and has the given name set as one of its keys.
+func (x *{{.Type}}) ensureManagedVar(name string) {
+    if {{.ManagedVarsMap}} == nil {
+        {{.ManagedVarsMap}} = make(map[string]struct{})
+    }
+    if _, ok := {{.ManagedVarsMap}}[name]; !ok {
+        {{.ManagedVarsMap}}[name] = struct{}{}
+    }
 }
 
 {{- range .ManagedFields}}
 {{if not .IsManagedVarsMap -}}
-// Get{{.ManagedVarBaseName}} returns the struct's {{.BareName}} value.
+// Get{{.ManagedVarBaseName}} returns the {{.StructType}} struct's {{.BareName}} value.
 func (x *{{.StructType}}) Get{{.ManagedVarBaseName}}() {{.Type}} {
     return x.{{.BareName}}
 }
 
-// Set{{.ManagedVarBaseName}} sets the struct's {{.BareName}} value.
+// Set{{.ManagedVarBaseName}} sets the {{.StructType}} struct's {{.BareName}} value,
+// and flags it for noms marshaling if this is the first time it's being set.
 func (x *{{.StructType}}) Set{{.ManagedVarBaseName}}(val {{.Type}}) {
-    ensureManagedVar(&x.{{.ManagedVarsMapName}}, "{{.ManagedVarBaseName}}")
+    x.ensureManagedVar("{{.ManagedVarBaseName}}")
     x.{{.BareName}} = val
 }
 {{end -}}
@@ -197,9 +211,10 @@ func (x {{.Type}}) MarshalNoms(vrw nt.ValueReadWriter) ({{.Type | LowerFirst}}Va
     {{range .SortedAllFields -}}
         // {{.Name}} ({{.Type}})
         {{if .IsManagedVar -}}
-        if x.{{.ManagedVarsMapName}} != nil {
-            {{if not .IsManagedVarsMap -}}
-            if _, ok := x.{{.ManagedVarsMapName}}["{{.ManagedVarBaseName}}"]; ok {
+            {{if .IsManagedVarsMap -}}
+            if {{.ManagedVarsMap}} != nil {
+            {{- else -}}
+            if x.IsManagedVarSet("{{.ManagedVarBaseName}}") {
             {{end -}}
                 managedFields = append(managedFields, "{{.BareName}}")
         {{end -}}
@@ -209,10 +224,7 @@ func (x {{.Type}}) MarshalNoms(vrw nt.ValueReadWriter) ({{.Type | LowerFirst}}Va
             values = append(values, {{- template "decompose_value" .}})
         {{- end}}
         {{if .IsManagedVar -}}
-            {{if not .IsManagedVarsMap -}}
             }
-            {{end -}}
-        }
         {{end -}}
     {{end}}
 

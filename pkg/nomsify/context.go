@@ -84,8 +84,8 @@ func (c context) ManagedVarName() string {
 	return "managedVar"
 }
 
-func (c context) ManagedVarsMapName() string {
-	return "managedVars"
+func (c context) ManagedVarsMap() string {
+	return xPrefix + "managedVars"
 }
 
 func (c context) IsManagedVar(name string) bool {

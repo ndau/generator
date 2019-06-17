@@ -48,7 +48,7 @@ func (f field) IsManagedVar() bool {
 }
 
 func (f field) IsManagedVarsMap() bool {
-	return f.BareName() == f.Context.ManagedVarsMapName()
+	return f.Name == f.ManagedVarsMap()
 }
 
 func (f field) ManagedVarBaseName() string {
@@ -64,8 +64,8 @@ func (f field) ManagedVarBaseName() string {
 	return strings.TrimPrefix(name, f.Context.ManagedVarName())
 }
 
-func (f field) ManagedVarsMapName() string {
-	return f.Context.ManagedVarsMapName()
+func (f field) ManagedVarsMap() string {
+	return f.Context.ManagedVarsMap()
 }
 
 func (f field) Expr() string {
