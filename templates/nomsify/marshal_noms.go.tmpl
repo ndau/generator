@@ -1,4 +1,4 @@
-{{define "decompose"}}
+{{define "decompose" -}}
     // template decompose: {{.Name}} ({{.Type}}->{{.Expr}})
     {{- if .IsPrimitive}}
     {{- else if .IsSlice}}
@@ -22,7 +22,7 @@
         {{- template "slice_value" .}}
     {{- else if .IsSet}}
         {{- template "set_value" .}}
-    {{- else if .IsMap}}
+    {{- else if .IsMap -}}
         {{template "map_value" .}}
     {{- else if .IsPointer }}
         {{- template "pointer_value" .}}
@@ -39,7 +39,7 @@
     {{.MakeLocal}}KVs := make([]nt.Value, 0, len({{.Name}})*2)
     for {{.MakeLocal}}Key, {{.MakeLocal}}Value := range {{.Name}} {
         {{template "decompose" (.MakeLocal | printf "%sValue" | .Inner)}}
-        {{.MakeLocal}}KVs = append(
+        {{- .MakeLocal}}KVs = append(
             {{.MakeLocal}}KVs,
             nt.String({{.MakeLocal}}Key),
             {{template "decompose_value" (.MakeLocal | printf "%sValue" | .Inner)}},
@@ -62,7 +62,7 @@
         {{.MakeLocal}}Unptr = {{(.Inner .Name).MarshalZero}}
     } else {
         {{template "decompose" (.Name | Deref | .Inner)}}
-        {{.MakeLocal}}Unptr = {{template "decompose_value" (.Name | Deref | .Inner)}}
+        {{- .MakeLocal}}Unptr = {{template "decompose_value" (.Name | Deref | .Inner)}}
     }
 {{- end}}
 {{define "pointer_value"}}{{.MakeLocal}}Unptr{{end}}
@@ -77,7 +77,7 @@
         }
         sort.Sort(sort.StringSlice({{.MakeLocal}}Sorted))
         for _, {{.MakeLocal}}Item := range {{.MakeLocal}}Sorted {
-            {{.MakeLocal}}Items = append(
+            {{- .MakeLocal}}Items = append(
                 {{.MakeLocal}}Items,
                 nt.String({{.MakeLocal}}Item),
             )
@@ -90,7 +90,7 @@
     {{.MakeLocal}}Items := make([]nt.Value, 0, len({{.Name}}))
     for _, {{.MakeLocal}}Item := range {{.Name}} {
         {{template "decompose" (.MakeLocal | printf "%sItem" | .Inner)}}
-        {{.MakeLocal}}Items = append(
+        {{- .MakeLocal}}Items = append(
             {{.MakeLocal}}Items,
             {{template "decompose_value" (.MakeLocal | printf "%sItem" | .Inner)}},
         )
@@ -107,35 +107,144 @@
 {{define "textmarshaler_value"}}nt.String({{.MakeLocal}}String){{end}}
 
 {{define "marshal_noms"}}
+{{if .HasManagedVars -}}
+var {{.Type | LowerFirst}}FieldNames []string
+{{- end}}
 var {{.Type | LowerFirst}}StructTemplate nt.StructTemplate
 
 func init() {
+    {{if .HasManagedVars -}}
+    init{{.Type}}StructTemplate(nil)
+    {{- else -}}
     {{.Type | LowerFirst}}StructTemplate = nt.MakeStructTemplate("{{.Type}}", []string{
-        {{range .SortedFields -}}
+        {{range .SortedCoreFields -}}
             "{{.BareName}}",
         {{end -}}
     })
+    {{- end}}
 }
+
+{{if .HasManagedVars -}}
+func init{{.Type}}StructTemplate(managedFields []string) {
+    {{.Type | LowerFirst}}FieldNames = []string{
+        {{range .SortedCoreFields -}}
+            "{{.BareName}}",
+        {{end -}}
+    }
+    if len(managedFields) > 0 {
+        {{.Type | LowerFirst}}FieldNames = append({{.Type | LowerFirst}}FieldNames, managedFields...)
+        sort.Sort(sort.StringSlice({{.Type | LowerFirst}}FieldNames))
+    }
+    {{.Type | LowerFirst}}StructTemplate = nt.MakeStructTemplate("{{.Type}}", {{.Type | LowerFirst}}FieldNames)
+}
+
+func need{{.Type}}StructTemplateInit(managedFields []string) bool {
+    // Loop over the full field name list and make sure that every managed var in it also appears
+    // in the given managed field list.  They are both sorted, so the loop is O(linear).
+    i := 0
+    iLimit := len(managedFields)
+    for _, fieldName := range {{.Type | LowerFirst}}FieldNames {
+        if strings.HasPrefix(fieldName, "{{.ManagedVarName}}") || strings.HasPrefix(fieldName, "{{.HasPrefix}}{{.ManagedVarName}}") {
+            if i == iLimit || managedFields[i] != fieldName {
+                // We found a managed var in the full list that wasn't in the given list,
+                // or the managed field name in sorted order doesn't match; re-init.
+                return true
+            }
+            i++
+            // Keep going even if i == iLimit, to ensure no other managed vars in the full list.
+        }
+    }
+
+    // Re-init if we didn't find all of the given managed fields in the full list.
+    return i != iLimit
+}
+
+// IsManagedVarSet returns whether the given managed var has ever been set in the {{.Type}}.
+func (x *{{.Type}}) IsManagedVarSet(name string) bool {
+    if {{.ManagedVarsMap}} == nil {
+        return false
+    }
+    _, ok := {{.ManagedVarsMap}}[name]
+    return ok
+}
+
+// Ensure the managed vars map exists and has the given name set as one of its keys.
+func (x *{{.Type}}) ensureManagedVar(name string) {
+    if {{.ManagedVarsMap}} == nil {
+        {{.ManagedVarsMap}} = make(map[string]struct{})
+    }
+    if _, ok := {{.ManagedVarsMap}}[name]; !ok {
+        {{.ManagedVarsMap}}[name] = struct{}{}
+    }
+}
+
+{{- range .ManagedFields}}
+{{if not .IsManagedVarsMap -}}
+// Get{{.ManagedVarBaseName}} returns the {{.StructType}} struct's {{.BareName}} value.
+func (x *{{.StructType}}) Get{{.ManagedVarBaseName}}() {{.Type}} {
+    return x.{{.BareName}}
+}
+
+// Set{{.ManagedVarBaseName}} sets the {{.StructType}} struct's {{.BareName}} value,
+// and flags it for noms marshaling if this is the first time it's being set.
+func (x *{{.StructType}}) Set{{.ManagedVarBaseName}}(val {{.Type}}) {
+    x.ensureManagedVar("{{.ManagedVarBaseName}}")
+    x.{{.BareName}} = val
+}
+{{end -}}
+{{end -}}
+{{- end}}
 
 // MarshalNoms implements noms/go/marshal.Marshaler
 func (x {{.Type}}) MarshalNoms(vrw nt.ValueReadWriter) ({{.Type | LowerFirst}}Value nt.Value, err error) {
-    {{- range .Fields}}
+    {{- range .AllFields}}
         // {{.Name}} ({{.Type}}->{{.Expr}}) is primitive: {{.IsPrimitive}}
         {{if not .IsPrimitive}}
             {{- template "decompose" .}}
         {{- end}}
-    {{- end}}
+    {{end -}}
 
-    return {{.Type | LowerFirst}}StructTemplate.NewStruct([]nt.Value{
-        {{range .SortedFields -}}
-            // {{.Name}} ({{.Type}})
-            {{if .IsPrimitive}}
-                {{.MarshalPrimitive (printf "%s" .Name)}}
+    {{if .HasManagedVars}}
+    var managedFields []string
+
+    values := make([]nt.Value, 0, {{.TotalSortedFieldCount}})
+    {{range .SortedAllFields -}}
+        // {{.Name}} ({{.Type}})
+        {{if .IsManagedVar -}}
+            {{if .IsManagedVarsMap -}}
+            if {{.ManagedVarsMap}} != nil {
             {{- else -}}
-                {{- template "decompose_value" .}}
-            {{- end}},
+            if x.IsManagedVarSet("{{.ManagedVarBaseName}}") {
+            {{end -}}
+                managedFields = append(managedFields, "{{.BareName}}")
         {{end -}}
-    }), nil
+        {{if .IsPrimitive -}}
+            values = append(values, {{.MarshalPrimitive (printf "%s" .Name)}})
+        {{- else -}}
+            values = append(values, {{- template "decompose_value" .}})
+        {{- end}}
+        {{if .IsManagedVar -}}
+            }
+        {{end -}}
+    {{end}}
+
+    if need{{.Type}}StructTemplateInit(managedFields) {
+        init{{.Type}}StructTemplate(managedFields)
+    }
+    {{else -}}
+    values := []nt.Value{
+    {{range .SortedCoreFields -}}
+        // {{.Name}} ({{.Type}})
+        {{if .IsPrimitive -}}
+            {{.MarshalPrimitive (printf "%s" .Name)}}
+        {{- else -}}
+            {{- template "decompose_value" .}}
+        {{- end}},
+    {{end -}}
+    }
+    {{end}}
+
+    return {{.Type | LowerFirst}}StructTemplate.NewStruct(values), nil
 }
 
 var _ marshal.Marshaler = (*{{.Type}})(nil)

@@ -9,6 +9,12 @@ import (
 	"strings"
 )
 
+const (
+	xPrefix    = "x."
+	hasPrefix  = "Has"
+	xHasPrefix = xPrefix + hasPrefix
+)
+
 type field struct {
 	Name          string
 	definition    *ast.Field
@@ -20,7 +26,7 @@ type field struct {
 
 func (c context) newField(name string, definition *ast.Field) field {
 	f := field{
-		Name:       "x." + name,
+		Name:       xPrefix + name,
 		definition: definition,
 		expr:       definition.Type,
 		Context:    &c,
@@ -35,6 +41,31 @@ func (f field) BareName() string {
 	}
 	fields := strings.Split(name, ".")
 	return fields[len(fields)-1]
+}
+
+func (f field) IsManagedVar() bool {
+	return f.Context.IsManagedVar(f.BareName())
+}
+
+func (f field) IsManagedVarsMap() bool {
+	return f.Name == f.ManagedVarsMap()
+}
+
+func (f field) ManagedVarBaseName() string {
+	name := f.BareName()
+	// Return the special managedVars map name intact.
+	if f.IsManagedVarsMap() {
+		return name
+	}
+	// Strip off the "Has" prefix if there is one.
+	if strings.HasPrefix(name, hasPrefix) {
+		name = strings.TrimPrefix(name, hasPrefix)
+	}
+	return strings.TrimPrefix(name, f.Context.ManagedVarName())
+}
+
+func (f field) ManagedVarsMap() string {
+	return f.Context.ManagedVarsMap()
 }
 
 func (f field) Expr() string {
@@ -144,8 +175,8 @@ func (f field) MarshalPrimitive(expr string) string {
 		return fmt.Sprintf("util.Int(%s).NomsValue()", expr)
 	}
 	// we need special handling for HasX injected fields
-	if strings.Contains(expr, "Has") {
-		return fmt.Sprintf("nt.Bool(%s != nil)", strings.Replace(expr, "Has", "", -1))
+	if strings.HasPrefix(expr, xHasPrefix) {
+		return fmt.Sprintf("nt.Bool(%s%s != nil)", xPrefix, strings.TrimPrefix(expr, xHasPrefix))
 	}
 	switch f.Type() {
 	case "bool":
@@ -204,6 +235,10 @@ func (f field) Type() string {
 	var buf bytes.Buffer
 	printer.Fprint(&buf, f.Context.fset, f.expr)
 	return buf.String()
+}
+
+func (f field) StructType() string {
+	return f.Context.Type()
 }
 
 func (f field) Value() string {
