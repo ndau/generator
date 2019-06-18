@@ -70,7 +70,7 @@ func (f *Field) fillFieldFromType() error {
 	case "pricecurve.Nanocent":
 		f.nlit(rand.Int63n(maxJSInt))
 
-	case "byte":
+	case "byte", "uint8":
 		bytes, err := randBytes(1)
 		if err != nil {
 			return err

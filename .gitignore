@@ -1,3 +1,8 @@
+# Ignore the examples directory, which has been git chaff for a while now
+examples/
+
+# Ignore the js output, which is also chaff.
+*.js
 
 # Ignore the vendor directory, which is currently some 13M of
 # .go files alone. This means that fresh clones will need to run
