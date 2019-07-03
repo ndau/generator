@@ -60,20 +60,20 @@ describe('ReleaseFromEndowment object prepare tests', () => {
     )
   })
 })
-describe('ChangeSettlementPeriod object prepare tests', () => {
-  it('should build an object for ChangeSettlementPeriod and convert to known b64', () => {
-    var changesettlementperiodtx = {"target":"ndapwk56zsx3t6zfn52c2eideidgppjymjjixez4529gtqk9","period":"11m25dt14h35m49s167320us","sequence":1912297565323361,"signatures":["a4jadtcadup2xr8b752t8bt9cuq2adnzrer498r6uxpw5hq3xugj4izuqtgkt9ix4mgtuuxazr6gdb2qmuxxnjxwptumwhqmv2x4i7ax2bkarpnq6itqbes3"]}
+describe('ChangeRecoursePeriod object prepare tests', () => {
+  it('should build an object for ChangeRecoursePeriod and convert to known b64', () => {
+    var changerecourseperiodtx = {"target":"ndapwk56zsx3t6zfn52c2eideidgppjymjjixez4529gtqk9","period":"11m25dt14h35m49s167320us","sequence":1912297565323361,"signatures":["a4jadtcadup2xr8b752t8bt9cuq2adnzrer498r6uxpw5hq3xugj4izuqtgkt9ix4mgtuuxazr6gdb2qmuxxnjxwptumwhqmv2x4i7ax2bkarpnq6itqbes3"]}
 
-    var bb = new TxSignPrep().prepare(changesettlementperiodtx)
+    var bb = new TxSignPrep().prepare(changerecourseperiodtx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
       "MTFtMjVkdDE0aDM1bTQ5czE2NzMyMHVzAAbLOXkWAGFuZGFwd2s1NnpzeDN0NnpmbjUyYzJlaWRlaWRncHBqeW1qaml4ZXo0NTI5Z3Rxazk="
     )
   })
-  it('should build an object for ChangeSettlementPeriod without signatures and convert to known b64', () => {
-    var changesettlementperiodtx = {"period":"11m25dt14h35m49s167320us","sequence":1912297565323361,"target":"ndapwk56zsx3t6zfn52c2eideidgppjymjjixez4529gtqk9"}
+  it('should build an object for ChangeRecoursePeriod without signatures and convert to known b64', () => {
+    var changerecourseperiodtx = {"period":"11m25dt14h35m49s167320us","sequence":1912297565323361,"target":"ndapwk56zsx3t6zfn52c2eideidgppjymjjixez4529gtqk9"}
 
-    var bb = new TxSignPrep().prepare(changesettlementperiodtx)
+    var bb = new TxSignPrep().prepare(changerecourseperiodtx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
       "MTFtMjVkdDE0aDM1bTQ5czE2NzMyMHVzAAbLOXkWAGFuZGFwd2s1NnpzeDN0NnpmbjUyYzJlaWRlaWRncHBqeW1qaml4ZXo0NTI5Z3Rxazk="
@@ -180,20 +180,20 @@ describe('SetRewardsDestination object prepare tests', () => {
     )
   })
 })
-describe('ClaimAccount object prepare tests', () => {
-  it('should build an object for ClaimAccount and convert to known b64', () => {
-    var claimaccounttx = {"target":"ndapvu6gqdhm22ud7tm2tbw6gncuh3r4xcs84xqpupi82yyn","ownership":"npuba8jadtbbece9ghk737ci2byzcs6ism9k7hxfqikfxsjqscecc5fe7q6t7xb6k7juravrx35q","validation_keys":["npuba8jadtbbear3d3qvud6tp8trknmesi5mskt88b2g3u7z54wn63e2ghvnwryd3efbu6ntxgwc"],"validation_script":"4kBZKlEDQoXMGorq","sequence":7142365320213337,"signature":"a4jadtcacam96y34vwjhypt5c33j6ed59mvrak3g6z895zkdnsgb5ink8x4h2qp98sp22rdzhzgmucwtjzgufbc3k6465jkz9j7462cjbs8rj73r86ufzw7f"}
+describe('SetValidation object prepare tests', () => {
+  it('should build an object for SetValidation and convert to known b64', () => {
+    var setvalidationtx = {"target":"ndapvu6gqdhm22ud7tm2tbw6gncuh3r4xcs84xqpupi82yyn","ownership":"npuba8jadtbbece9ghk737ci2byzcs6ism9k7hxfqikfxsjqscecc5fe7q6t7xb6k7juravrx35q","validation_keys":["npuba8jadtbbear3d3qvud6tp8trknmesi5mskt88b2g3u7z54wn63e2ghvnwryd3efbu6ntxgwc"],"validation_script":"4kBZKlEDQoXMGorq","sequence":7142365320213337,"signature":"a4jadtcacam96y34vwjhypt5c33j6ed59mvrak3g6z895zkdnsgb5ink8x4h2qp98sp22rdzhzgmucwtjzgufbc3k6465jkz9j7462cjbs8rj73r86ufzw7f"}
 
-    var bb = new TxSignPrep().prepare(claimaccounttx)
+    var bb = new TxSignPrep().prepare(setvalidationtx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
       "bnB1YmE4amFkdGJiZWNlOWdoazczN2NpMmJ5emNzNmlzbTlrN2h4ZnFpa2Z4c2pxc2NlY2M1ZmU3cTZ0N3hiNms3anVyYXZyeDM1cQAZX/GDxHNZbmRhcHZ1NmdxZGhtMjJ1ZDd0bTJ0Ync2Z25jdWgzcjR4Y3M4NHhxcHVwaTgyeXlubnB1YmE4amFkdGJiZWFyM2QzcXZ1ZDZ0cDh0cmtubWVzaTVtc2t0ODhiMmczdTd6NTR3bjYzZTJnaHZud3J5ZDNlZmJ1Nm50eGd3YzRrQlpLbEVEUW9YTUdvcnE="
     )
   })
-  it('should build an object for ClaimAccount without signatures and convert to known b64', () => {
-    var claimaccounttx = {"ownership":"npuba8jadtbbece9ghk737ci2byzcs6ism9k7hxfqikfxsjqscecc5fe7q6t7xb6k7juravrx35q","sequence":7142365320213337,"target":"ndapvu6gqdhm22ud7tm2tbw6gncuh3r4xcs84xqpupi82yyn","validation_keys":["npuba8jadtbbear3d3qvud6tp8trknmesi5mskt88b2g3u7z54wn63e2ghvnwryd3efbu6ntxgwc"],"validation_script":"4kBZKlEDQoXMGorq"}
+  it('should build an object for SetValidation without signatures and convert to known b64', () => {
+    var setvalidationtx = {"ownership":"npuba8jadtbbece9ghk737ci2byzcs6ism9k7hxfqikfxsjqscecc5fe7q6t7xb6k7juravrx35q","sequence":7142365320213337,"target":"ndapvu6gqdhm22ud7tm2tbw6gncuh3r4xcs84xqpupi82yyn","validation_keys":["npuba8jadtbbear3d3qvud6tp8trknmesi5mskt88b2g3u7z54wn63e2ghvnwryd3efbu6ntxgwc"],"validation_script":"4kBZKlEDQoXMGorq"}
 
-    var bb = new TxSignPrep().prepare(claimaccounttx)
+    var bb = new TxSignPrep().prepare(setvalidationtx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
       "bnB1YmE4amFkdGJiZWNlOWdoazczN2NpMmJ5emNzNmlzbTlrN2h4ZnFpa2Z4c2pxc2NlY2M1ZmU3cTZ0N3hiNms3anVyYXZyeDM1cQAZX/GDxHNZbmRhcHZ1NmdxZGhtMjJ1ZDd0bTJ0Ync2Z25jdWgzcjR4Y3M4NHhxcHVwaTgyeXlubnB1YmE4amFkdGJiZWFyM2QzcXZ1ZDZ0cDh0cmtubWVzaTVtc2t0ODhiMmczdTd6NTR3bjYzZTJnaHZud3J5ZDNlZmJ1Nm50eGd3YzRrQlpLbEVEUW9YTUdvcnE="
@@ -382,18 +382,18 @@ describe('Issue object prepare tests', () => {
 })
 describe('ClaimChildAccount object prepare tests', () => {
   it('should build an object for ClaimChildAccount and convert to known b64', () => {
-    var claimchildaccounttx = {"target":"ndap3iktb7j8jqmi9zukk4u3ipax7iimeqep6s3kahpz8aqu","child":"ndahibi6ys2vdyqyd5hu3hzkzb5ss3s86inekxw9t3fbd8hm","child_ownership":"npuba8jadtbbea5pg8hjpvmxcituvenswt7sn3v2p2y89q3rz3kizbkzzw5y3fkt3vxdi8tu9jy6","child_signature":"a4jadtca2usdtre78zw8f9urmk56hwa7y3bkzfpr2yjhs7hw9krvmj2i46p2h4wnuwducbta6dwctcnppwz7rgbm5xgpzpzx52jp8427gpxdtsispukmykxp","child_settlement_period":"1y4m6dt5h21m46s343734us","child_validation_keys":["npuba8jadtbbecuus9kvhq64sfaj9i92d7yf9iqvvnbvktemnaawecwzt59wqvzwmfsmt3n9qqp7"],"child_validation_script":"rXKNlIv+hTs6t5d3","sequence":2114375199125313,"signatures":["a4jadtcaasfqqecvccc88qprxfu9umezshpc55xc66rcmckp735h7u4xq3nr3ewf9iuedmb65txi5z4am76p5q2p2m773kyddqwp2c67p3qf7bcrcvbr5ih5"]}
+    var createchildaccounttx = {"target":"ndap3iktb7j8jqmi9zukk4u3ipax7iimeqep6s3kahpz8aqu","child":"ndahibi6ys2vdyqyd5hu3hzkzb5ss3s86inekxw9t3fbd8hm","child_ownership":"npuba8jadtbbea5pg8hjpvmxcituvenswt7sn3v2p2y89q3rz3kizbkzzw5y3fkt3vxdi8tu9jy6","child_signature":"a4jadtca2usdtre78zw8f9urmk56hwa7y3bkzfpr2yjhs7hw9krvmj2i46p2h4wnuwducbta6dwctcnppwz7rgbm5xgpzpzx52jp8427gpxdtsispukmykxp","child_recourse_period":"1y4m6dt5h21m46s343734us","child_validation_keys":["npuba8jadtbbecuus9kvhq64sfaj9i92d7yf9iqvvnbvktemnaawecwzt59wqvzwmfsmt3n9qqp7"],"child_validation_script":"rXKNlIv+hTs6t5d3","sequence":2114375199125313,"signatures":["a4jadtcaasfqqecvccc88qprxfu9umezshpc55xc66rcmckp735h7u4xq3nr3ewf9iuedmb65txi5z4am76p5q2p2m773kyddqwp2c67p3qf7bcrcvbr5ih5"]}
 
-    var bb = new TxSignPrep().prepare(claimchildaccounttx)
+    var bb = new TxSignPrep().prepare(createchildaccounttx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
       "bmRhaGliaTZ5czJ2ZHlxeWQ1aHUzaHpremI1c3Mzczg2aW5la3h3OXQzZmJkOGhtbnB1YmE4amFkdGJiZWE1cGc4aGpwdm14Y2l0dXZlbnN3dDdzbjN2MnAyeTg5cTNyejNraXpia3p6dzV5M2ZrdDN2eGRpOHR1OWp5NjF5NG02ZHQ1aDIxbTQ2czM0MzczNHVzYTRqYWR0Y2EydXNkdHJlNzh6dzhmOXVybWs1Nmh3YTd5M2JremZwcjJ5amhzN2h3OWtydm1qMmk0NnAyaDR3bnV3ZHVjYnRhNmR3Y3RjbnBwd3o3cmdibTV4Z3B6cHp4NTJqcDg0MjdncHhkdHNpc3B1a215a3hwbnB1YmE4amFkdGJiZWN1dXM5a3ZocTY0c2ZhajlpOTJkN3lmOWlxdnZuYnZrdGVtbmFhd2Vjd3p0NTl3cXZ6d21mc210M245cXFwN3JYS05sSXYraFRzNnQ1ZDMAB4MDVqpvQW5kYXAzaWt0YjdqOGpxbWk5enVrazR1M2lwYXg3aWltZXFlcDZzM2thaHB6OGFxdQ=="
     )
   })
   it('should build an object for ClaimChildAccount without signatures and convert to known b64', () => {
-    var claimchildaccounttx = {"child":"ndahibi6ys2vdyqyd5hu3hzkzb5ss3s86inekxw9t3fbd8hm","child_ownership":"npuba8jadtbbea5pg8hjpvmxcituvenswt7sn3v2p2y89q3rz3kizbkzzw5y3fkt3vxdi8tu9jy6","child_settlement_period":"1y4m6dt5h21m46s343734us","child_signature":"a4jadtca2usdtre78zw8f9urmk56hwa7y3bkzfpr2yjhs7hw9krvmj2i46p2h4wnuwducbta6dwctcnppwz7rgbm5xgpzpzx52jp8427gpxdtsispukmykxp","child_validation_keys":["npuba8jadtbbecuus9kvhq64sfaj9i92d7yf9iqvvnbvktemnaawecwzt59wqvzwmfsmt3n9qqp7"],"child_validation_script":"rXKNlIv+hTs6t5d3","sequence":2114375199125313,"target":"ndap3iktb7j8jqmi9zukk4u3ipax7iimeqep6s3kahpz8aqu"}
+    var createchildaccounttx = {"child":"ndahibi6ys2vdyqyd5hu3hzkzb5ss3s86inekxw9t3fbd8hm","child_ownership":"npuba8jadtbbea5pg8hjpvmxcituvenswt7sn3v2p2y89q3rz3kizbkzzw5y3fkt3vxdi8tu9jy6","child_recourse_period":"1y4m6dt5h21m46s343734us","child_signature":"a4jadtca2usdtre78zw8f9urmk56hwa7y3bkzfpr2yjhs7hw9krvmj2i46p2h4wnuwducbta6dwctcnppwz7rgbm5xgpzpzx52jp8427gpxdtsispukmykxp","child_validation_keys":["npuba8jadtbbecuus9kvhq64sfaj9i92d7yf9iqvvnbvktemnaawecwzt59wqvzwmfsmt3n9qqp7"],"child_validation_script":"rXKNlIv+hTs6t5d3","sequence":2114375199125313,"target":"ndap3iktb7j8jqmi9zukk4u3ipax7iimeqep6s3kahpz8aqu"}
 
-    var bb = new TxSignPrep().prepare(claimchildaccounttx)
+    var bb = new TxSignPrep().prepare(createchildaccounttx)
     var b64 = bb.b64encode()
     expect(b64).toEqual(
       "bmRhaGliaTZ5czJ2ZHlxeWQ1aHUzaHpremI1c3Mzczg2aW5la3h3OXQzZmJkOGhtbnB1YmE4amFkdGJiZWE1cGc4aGpwdm14Y2l0dXZlbnN3dDdzbjN2MnAyeTg5cTNyejNraXpia3p6dzV5M2ZrdDN2eGRpOHR1OWp5NjF5NG02ZHQ1aDIxbTQ2czM0MzczNHVzYTRqYWR0Y2EydXNkdHJlNzh6dzhmOXVybWs1Nmh3YTd5M2JremZwcjJ5amhzN2h3OWtydm1qMmk0NnAyaDR3bnV3ZHVjYnRhNmR3Y3RjbnBwd3o3cmdibTV4Z3B6cHp4NTJqcDg0MjdncHhkdHNpc3B1a215a3hwbnB1YmE4amFkdGJiZWN1dXM5a3ZocTY0c2ZhajlpOTJkN3lmOWlxdnZuYnZrdGVtbmFhd2Vjd3p0NTl3cXZ6d21mc210M245cXFwN3JYS05sSXYraFRzNnQ1ZDMAB4MDVqpvQW5kYXAzaWt0YjdqOGpxbWk5enVrazR1M2lwYXg3aWltZXFlcDZzM2thaHB6OGFxdQ=="
