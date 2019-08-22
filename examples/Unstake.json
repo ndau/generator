@@ -1,7 +1,10 @@
 {
-  "target": "ndagqw9b5tdcnvye53xt76fe2k27s9wsrrz8jvvg9c4mhk92",
-  "sequence": 3820780875409098,
+  "target": "ndac8xyyz36g8mxb79e3bw2an6x76xd4999eerqum8g5ruze",
+  "rules": "ndanmjrfekg7gz7kqtwuq65stt5yjmhmhdnnixcndphhv5aa",
+  "stake_to": "ndamyg53rqj44t2t7a47r8mgcd9wqqajcqubv325j68mpm4d",
+  "qty": 5717665647089002,
+  "sequence": 4869704443482549,
   "signatures": [
-    "a4jadtcaqzy4kitkadqv56i9ddgtfk8z642nu73yzheu8h6tnzxxjrq2cn993v7tgbxkd9397vvyjnxuu7x5a7xinkcpp3uazezixgc5qm7etgzeaw9r8r26"
+    "a4jadtcayxshrqvw4wt93i54dp8h6taytj3rvrsprgtszu5a5f3dqfp47k3qmwz4yudspywapqczgvd394gqmvkgjssab4c8695vwu2x6bdz29mpsjedc3vx"
   ]
 }

@@ -1,11 +1,11 @@
 {
-  "target": "ndac3beunkses6sk2i3uaxec6fatppsenfipdvxw59nahcgw",
+  "target": "ndaf3s22cibdsz65vwkyeithctuxmvrwm33ft2w7q6kzxuvh",
   "new_keys": [
-    "npuba8jadtbbedkfn3nh9bwa5yjf84ght764ye9q32eju6tqkjqs52s7if8wymw658nuz78qx4yf"
+    "npuba8jadtbbeci6msdxsu38bfjir75thhbkdtxrk83jgv28v7guq2njrrqadgppezbun6h5n6qj"
   ],
-  "validation_script": "APGYmJtfD/x/3cOM",
+  "validation_script": "peclUocXxZbU7YRe",
   "sequence": 4589118442271941,
   "signatures": [
-    "a4jadtcay7tqkxezgg8snhmkerwcgjmuh2897c2vcu85ptaaabji8pd8jni6h49hs5smpdnvbb7bj4sn9ufiedjsnygicpibr8a9tqgkc8yui9dxjv4cnryu"
+    "a4jadtca5hucvgaahdrw6ihjchzbs23js4divis3tirzctrcbepz47dt7kv2v3u7smrpviwkuunrieawuqgut86fphqpe7mudcisfutyp4tytadz92f7whky"
   ]
 }
