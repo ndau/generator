@@ -189,19 +189,19 @@ func (x *{{.Type}}) UnmarshalNoms(value nt.Value) (err error) {
     // the struct until it finds one whose name happens to match the one sought.
     // It's better to iterate once over the struct and set the fields of the
     // target struct in arbitrary order.
-    vs.IterFields(func(name string, value nt.Value) {
-        if err == nil {
-            switch name {
-            {{- range .AllFields}}
-            // {{.Name}} ({{.Type}}->{{.Expr}}) is primitive: {{.IsPrimitive}}
-            case "{{.BareName}}":
-                {{- template "u_decompose" .}}
+    vs.IterFields(func(name string, value nt.Value) (stop bool) {
+        switch name {
+        {{- range .AllFields}}
+        // {{.Name}} ({{.Type}}->{{.Expr}}) is primitive: {{.IsPrimitive}}
+        case "{{.BareName}}":
+            {{- template "u_decompose" .}}
 
-                    {{.Name}} = {{template "u_decompose_value" .}}
+                {{.Name}} = {{template "u_decompose_value" .}}
 
-            {{- end}}
-            }
+        {{- end}}
         }
+        stop = err != nil
+        return
     })
     return
 }
