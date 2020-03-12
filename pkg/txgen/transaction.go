@@ -13,7 +13,7 @@ package txgen
 import (
 	"encoding/json"
 
-	"github.com/oneiro-ndev/metanode/pkg/meta/transaction"
+	"github.com/ndau/metanode/pkg/meta/transaction"
 )
 
 // Transaction stores metadata about a transaction

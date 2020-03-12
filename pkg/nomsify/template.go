@@ -21,7 +21,7 @@ import (
 )
 
 const (
-	prefixPath        = "$GOPATH/src/github.com/oneiro-ndev/generator/templates/nomsify/"
+	prefixPath        = "$GOPATH/src/github.com/ndau/generator/templates/nomsify/"
 	headerPath        = "header.go.tmpl"
 	marshalNomsPath   = "marshal_noms.go.tmpl"
 	unmarshalNomsPath = "unmarshal_noms.go.tmpl"

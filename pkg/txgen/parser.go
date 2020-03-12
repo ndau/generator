@@ -18,7 +18,7 @@ import (
 	"go/token"
 	"os"
 
-	"github.com/oneiro-ndev/metanode/pkg/meta/transaction"
+	"github.com/ndau/metanode/pkg/meta/transaction"
 )
 
 // ParseTransactions parses the transaction definition file

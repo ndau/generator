@@ -16,7 +16,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/oneiro-ndev/generator/pkg/txgen"
+	"github.com/ndau/generator/pkg/txgen"
 )
 
 var (

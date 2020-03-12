@@ -17,10 +17,10 @@ import (
 	"reflect"
 	"strings"
 
-	"github.com/oneiro-ndev/ndaumath/pkg/address"
-	"github.com/oneiro-ndev/ndaumath/pkg/pricecurve"
-	"github.com/oneiro-ndev/ndaumath/pkg/signature"
-	math "github.com/oneiro-ndev/ndaumath/pkg/types"
+	"github.com/ndau/ndaumath/pkg/address"
+	"github.com/ndau/ndaumath/pkg/pricecurve"
+	"github.com/ndau/ndaumath/pkg/signature"
+	math "github.com/ndau/ndaumath/pkg/types"
 )
 
 const maxJSInt = 9007199254740991

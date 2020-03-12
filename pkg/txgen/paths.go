@@ -58,7 +58,7 @@ var (
 
 func init() {
 	gopath = os.ExpandEnv(rawGopath)
-	oneiro = filepath.Join(gopath, "src", "github.com", "oneiro-ndev")
+	oneiro = filepath.Join(gopath, "src", "github.com", "ndau")
 
 	project = filepath.Join(oneiro, "generator")
 	templates = filepath.Join(project, "templates")

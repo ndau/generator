@@ -14,7 +14,7 @@ import (
 	"fmt"
 	"reflect"
 
-	"github.com/oneiro-ndev/metanode/pkg/meta/transaction"
+	"github.com/ndau/metanode/pkg/meta/transaction"
 	"github.com/pkg/errors"
 )
 

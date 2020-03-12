@@ -16,7 +16,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/oneiro-ndev/generator/pkg/nomsify"
+	"github.com/ndau/generator/pkg/nomsify"
 )
 
 func check(err error) {
